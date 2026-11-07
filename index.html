@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulateur TJM Freelance vs CDI</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Slider Accents */
+    input[type=range] {
+      accent-color: #6366f1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-full font-sans antialiased bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-slate-200">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white font-bold text-lg">
+          ⚖️
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+            Simulateur TJM Freelance vs CDI
+            <span class="text-xs bg-indigo-500/20 text-indigo-300 font-semibold px-2 py-0.5 rounded-full border border-indigo-500/30">2026 Ready</span>
+          </h1>
+          <p class="text-xs text-slate-400 hidden sm:block">Comparez votre vrai revenu net en poche & le coût du risque social</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 text-xs">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Calcul 100% In-Browser
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- Top Status Banner : Gagnant / Perdant -->
+    <div id="verdictBanner" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl">
+      <!-- Injected via JS -->
+    </div>
+
+    <!-- Main Two Column Grid: Inputs & Analysis -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- LEFT: Inputs (5 Cols) -->
+      <section class="lg:col-span-5 space-y-6">
+        
+        <!-- Freelance Parameters Card -->
+        <div class="bg-slate-900/80 backdrop-blur border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              1. Paramètres Freelance
+            </h2>
+            <span class="text-xs text-slate-400" id="caPrevisionnelBadge">CA: 115 500 €</span>
+          </div>
+
+          <!-- Statut Juridique -->
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wide">Statut d'activité</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" data-statut="AE" class="statut-btn active text-center p-2.5 rounded-xl border border-indigo-500/50 bg-indigo-600/20 text-indigo-200 text-xs font-semibold transition hover:bg-indigo-600/30">
+                Auto-Entr. (BNC)
+              </button>
+              <button type="button" data-statut="SASU_IS" class="statut-btn text-center p-2.5 rounded-xl border border-slate-750 bg-slate-800/60 text-slate-300 text-xs font-semibold transition hover:bg-slate-800">
+                SASU à l'IS
+              </button>
+              <button type="button" data-statut="SASU_IR" class="statut-btn text-center p-2.5 rounded-xl border border-slate-750 bg-slate-800/60 text-slate-300 text-xs font-semibold transition hover:bg-slate-800">
+                SASU à l'IR
+              </button>
+            </div>
+            <p id="statutNotice" class="text-xs text-slate-400 mt-1 leading-relaxed">
+              <!-- Notice modifiée dynamiquement -->
+            </p>
+          </div>
+
+          <!-- TJM Input & Slider -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label for="tjmInput" class="font-semibold text-slate-300">TJM Facturé (€ HT / jour)</label>
+              <div class="flex items-center gap-1">
+                <input type="number" id="tjmInput" min="150" max="2500" step="10" value="550" class="w-20 px-2 py-1 bg-slate-950 border border-slate-700 rounded-lg text-right font-bold text-indigo-400 focus:outline-none focus:border-indigo-500 text-sm">
+                <span class="text-slate-400 font-medium">€</span>
+              </div>
+            </div>
+            <input type="range" id="tjmSlider" min="200" max="1500" step="10" value="550" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>200 €</span>
+              <span>Dev Mid (500-600€)</span>
+              <span>Dev Lead/Architecte (750€+)</span>
+              <span>1 500 €</span>
+            </div>
+          </div>
+
+          <!-- Jours Facturés -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label for="joursInput" class="font-semibold text-slate-300">Jours facturés / an</label>
+              <div class="flex items-center gap-1">
+                <input type="number" id="joursInput" min="50" max="260" step="1" value="210" class="w-16 px-2 py-1 bg-slate-950 border border-slate-700 rounded-lg text-right font-bold text-indigo-400 focus:outline-none focus:border-indigo-500 text-sm">
+                <span class="text-slate-400 font-medium">j</span>
+              </div>
+            </div>
+            <input type="range" id="joursSlider" min="100" max="240" step="1" value="210" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>100j (temps partiel)</span>
+              <span>210j (std - 5 sem. congés)</span>
+              <span>235j (quasi non-stop)</span>
+            </div>
+          </div>
+
+          <!-- Frais Professionnels -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <div>
+                <span class="font-semibold text-slate-300">Frais pro annuels (€ HT)</span>
+                <span class="text-[10px] text-slate-400 block">Compta, banque, ordi, RC Pro, coworking</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input type="number" id="fraisInput" min="0" max="50000" step="200" value="1200" class="w-24 px-2 py-1 bg-slate-950 border border-slate-700 rounded-lg text-right font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 text-sm">
+                <span class="text-slate-400 font-medium">€</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Options Supplémentaires Freelance (Selon Statut) -->
+          <div id="aeOptions" class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-300 font-medium">Versement Libératoire de l'IR (2.2%)</span>
+              <input type="checkbox" id="aeVersementLiberatoire" class="h-4 w-4 rounded border-slate-700 bg-slate-900 text-indigo-600 focus:ring-0">
+            </div>
+            <p class="text-[11px] text-slate-500 leading-tight">Activable si votre RFR N-2 est inférieur au plafond légal fiscal.</p>
+          </div>
+
+          <div id="sasuOptions" class="hidden p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs space-y-3">
+            <div class="space-y-1">
+              <label class="block text-slate-300 font-medium">Stratégie de rémunération SASU IS :</label>
+              <select id="sasuRemunMode" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+                <option value="dividendes_full">100% Dividendes (Optimisé Flat Tax 30%)</option>
+                <option value="mixte">Mixte (SMIC Salaire pour sécu + Dividendes)</option>
+                <option value="salaire_full">100% Rémunération Président (~80% cotisations)</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CDI Comparison Card -->
+        <div class="bg-slate-900/80 backdrop-blur border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              2. CDI de Comparaison
+            </h2>
+            <span class="text-xs text-slate-400">Réf: Dev Senior Île-de-France</span>
+          </div>
+
+          <!-- Salaire Brut Annuel -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label for="cdiBrutInput" class="font-semibold text-slate-300">Salaire Brut Annuel (€)</label>
+              <div class="flex items-center gap-1">
+                <input type="number" id="cdiBrutInput" min="30000" max="250000" step="1000" value="65000" class="w-24 px-2 py-1 bg-slate-950 border border-slate-700 rounded-lg text-right font-bold text-emerald-400 focus:outline-none focus:border-emerald-500 text-sm">
+                <span class="text-slate-400 font-medium">€</span>
+              </div>
+            </div>
+            <input type="range" id="cdiBrutSlider" min="35000" max="120000" step="1000" value="65000" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>35k € (Junior)</span>
+              <span>50k € (Confirmé)</span>
+              <span>65k € (Senior)</span>
+              <span>90k €+ (Staff/Lead)</span>
+            </div>
+          </div>
+
+          <!-- Jours Travaillés CDI (Convention / Forfait jour) -->
+          <div class="space-y-1">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-300 font-semibold">Forfait jours annuel standard</span>
+              <span class="font-bold text-slate-200">218 jours ouvrés</span>
+            </div>
+            <p class="text-[11px] text-slate-400">
+              En CDI Syntec : ~25 CP + 10-12 RTT payés, jours fériés chômés payés, maintien de salaire en arrêt maladie.
+            </p>
+          </div>
+
+          <!-- Valorisation des Avantages Sociaux Inclus -->
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-slate-300 flex items-center gap-1.5">
+                🛡️ Intégrer la valeur du parachute social CDI
+              </span>
+              <input type="checkbox" id="includeSafetyBuffer" checked class="h-4 w-4 rounded border-slate-700 bg-slate-900 text-indigo-600 focus:ring-0">
+            </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Valorise financièrement la couverture chômage (ARE France Travail), la mutuelle prise à 50%, la prévoyance cadre et le risque d'intercontrat non rémunéré (estimé à ~12% du brut).
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- RIGHT: Results & Breakdown (7 Cols) -->
+      <section class="lg:col-span-7 space-y-6">
+
+        <!-- Side-by-Side Comparison Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- Freelance Result Card -->
+          <div class="bg-gradient-to-b from-indigo-950/40 to-slate-900/80 border border-indigo-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute -top-12 -right-12 w-28 h-28 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-indigo-400"></span>
+                  Freelance (<span id="cardStatutLabel">AE</span>)
+                </span>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 font-mono" id="cardCaTotal">115 500 € CA</span>
+              </div>
+
+              <div class="mb-4">
+                <span class="text-xs text-slate-400 block">Reste Net en Poche (après impôt)</span>
+                <div class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" id="freelanceNetNetTotal">-- €</div>
+                <span class="text-xs text-indigo-300 font-semibold" id="freelanceNetNetMonthly">-- € / mois (lissé sur 12 mois)</span>
+              </div>
+
+              <!-- Freelance Detailed Deductions -->
+              <div class="space-y-1.5 text-xs border-t border-slate-800/80 pt-3 text-slate-300">
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Chiffre d'Affaires HT</span>
+                  <span class="font-mono" id="flDetailCA">0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Frais pro déduits</span>
+                  <span class="font-mono text-slate-400" id="flDetailFrais">- 0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Cotisations sociales (URSSAF)</span>
+                  <span class="font-mono text-rose-400" id="flDetailCotisations">- 0 €</span>
+                </div>
+                <div class="flex justify-between" id="flDetailISRow">
+                  <span class="text-slate-400">Impôt Sociétés (IS)</span>
+                  <span class="font-mono text-rose-400" id="flDetailIS">- 0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Impôt sur le Revenu (IR)</span>
+                  <span class="font-mono text-rose-400" id="flDetailIR">- 0 €</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-indigo-500/20 text-[11px] text-indigo-200/80 flex items-center justify-between">
+              <span>Protection sociale :</span>
+              <span class="font-medium text-amber-300" id="flSafetyRating">⚠️ Minimale (Pas d'ARE)</span>
+            </div>
+          </div>
+
+          <!-- CDI Result Card -->
+          <div class="bg-gradient-to-b from-emerald-950/30 to-slate-900/80 border border-emerald-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute -top-12 -right-12 w-28 h-28 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                  Salarié CDI
+                </span>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 font-mono" id="cardCdiBrut">65 000 € Brut</span>
+              </div>
+
+              <div class="mb-4">
+                <span class="text-xs text-slate-400 block">Reste Net en Poche (après impôt)</span>
+                <div class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" id="cdiNetNetTotal">-- €</div>
+                <span class="text-xs text-emerald-300 font-semibold" id="cdiNetNetMonthly">-- € / mois (lissé sur 12 mois)</span>
+              </div>
+
+              <!-- CDI Detailed Deductions -->
+              <div class="space-y-1.5 text-xs border-t border-slate-800/80 pt-3 text-slate-300">
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Coût employeur total (Superbrut)</span>
+                  <span class="font-mono text-slate-300" id="cdiDetailSuperbrut">0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Cotisations patronales (~43%)</span>
+                  <span class="font-mono text-slate-400" id="cdiDetailPatronales">- 0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Cotisations salariales (~22%)</span>
+                  <span class="font-mono text-rose-400" id="cdiDetailSalariales">- 0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Net avant IR (Feuille de paie)</span>
+                  <span class="font-mono text-slate-200" id="cdiDetailNetAvantIR">0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Impôt sur le Revenu (IR)</span>
+                  <span class="font-mono text-rose-400" id="cdiDetailIR">- 0 €</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-emerald-500/20 text-[11px] text-emerald-200/80 flex items-center justify-between">
+              <span>Protection sociale :</span>
+              <span class="font-medium text-emerald-400">🛡️ Maximale (Chômage + RTT + Prévoyance)</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Comparative Visual Progress Bars -->
+        <div class="bg-slate-900/80 backdrop-blur border border-slate-800/80 rounded-2xl p-5 shadow-xl space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Comparaison Graphique des Revenus Nets</h3>
+            <span class="text-xs text-slate-500">Par an (Net d'impôt)</span>
+          </div>
+
+          <!-- Freelance Bar -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs">
+              <span class="font-semibold text-indigo-400">Freelance Net</span>
+              <span class="font-mono text-slate-200" id="barFlValue">0 €</span>
+            </div>
+            <div class="h-3.5 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-slate-800">
+              <div id="barFlFill" class="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-300" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <!-- CDI Bar -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs">
+              <span class="font-semibold text-emerald-400">CDI Net</span>
+              <span class="font-mono text-slate-200" id="barCdiValue">0 €</span>
+            </div>
+            <div class="h-3.5 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-slate-800">
+              <div id="barCdiFill" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-300" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <!-- CDI Bar With Safety Cushion Adjusted -->
+          <div id="barSafetyContainer" class="space-y-1 pt-1">
+            <div class="flex justify-between text-xs">
+              <span class="font-semibold text-amber-400 flex items-center gap-1">
+                <span>CDI Net + Valeur Parachute Social & RTT</span>
+                <span class="text-[10px] text-slate-500">(Sécurité & congés)</span>
+              </span>
+              <span class="font-mono text-slate-200" id="barCdiSafetyValue">0 €</span>
+            </div>
+            <div class="h-3.5 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-slate-800">
+              <div id="barCdiSafetyFill" class="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full transition-all duration-300" style="width: 60%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Cards: TJM d'équilibre & Coût Jour -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 shadow-xl flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-lg shrink-0">
+              🎯
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-400 uppercase font-semibold tracking-wider block">TJM d'équilibre</span>
+              <span class="text-lg font-bold text-white" id="tjmEquilibreValue">-- € / jour</span>
+              <span class="text-[11px] text-slate-500 block leading-tight">Pour égaler le net en poche du CDI choisi</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 shadow-xl flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg shrink-0">
+              🏢
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-400 uppercase font-semibold tracking-wider block">Coût Journalier CDI pour la boîte</span>
+              <span class="text-lg font-bold text-white" id="cdiSuperbrutJour">-- € / jour</span>
+              <span class="text-[11px] text-slate-500 block leading-tight">Superbrut divisé par 218j travaillés</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pedagogical / Legal Alerts & Insights -->
+        <div id="legalAlertsBox" class="p-4 rounded-xl border border-slate-800 bg-slate-900/50 text-xs text-slate-400 space-y-2">
+          <!-- Dynamically populated warnings (ex: dépassement plafond AE) -->
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- Educational Footer: The Hidden Costs of Freelance -->
+    <section class="border-t border-slate-800 pt-8 pb-12 mt-8">
+      <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+        <span>💡</span> Ce que le TJM brut ne vous dit pas : Le coût réel du passage freelance
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-400 leading-relaxed">
+        <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/80 space-y-1.5">
+          <h4 class="font-bold text-slate-200">1. Zéro chômage (Pas d'ARE)</h4>
+          <p>
+            Un salarié en CDI cotise pour 18 à 24 mois d'allocation retour à l'emploi (ARE) en cas de rupture conventionnelle ou licenciement. En freelance, une mission qui s'arrête du jour au lendemain signifie 0 € de revenu entrant.
+          </p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/80 space-y-1.5">
+          <h4 class="font-bold text-slate-200">2. Congés & Maladie 100% à vos frais</h4>
+          <p>
+            Un CDI bénéficie de 25 congés payés, ~10 RTT et des ponts rémunérés. En freelance, si vous prenez 5 semaines de vacances, ce sont 25 jours non facturés. Une semaine de grippe = une semaine sans chiffre d'affaires.
+          </p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/80 space-y-1.5">
+          <h4 class="font-bold text-slate-200">3. Prévoyance, Mutuelle & Crédit immo</h4>
+          <p>
+            L'employeur paie au moins 50% de la mutuelle et souscrit une prévoyance cadre obligatoire. Les banques demandent généralement 3 bilans consécutifs pour accorder un prêt immobilier à un freelance, contre la fin de période d'essai pour un CDI.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ============================================================
+       SIMULATEUR TJM FREELANCE VS CDI - CORE ENGINE (FRANCE)
+       ============================================================ */
+
+    // STATE
+    const state = {
+      statut: 'AE', // 'AE', 'SASU_IS', 'SASU_IR'
+      tjm: 550,
+      jours: 210,
+      frais: 1200,
+      aeVersementLib: false,
+      sasuMode: 'dividendes_full',
+      cdiBrut: 65000,
+      includeSafetyBuffer: true,
+    };
+
+    // DOM ELEMENTS
+    const el = {
+      // Inputs
+      tjmInput: document.getElementById('tjmInput'),
+      tjmSlider: document.getElementById('tjmSlider'),
+      joursInput: document.getElementById('joursInput'),
+      joursSlider: document.getElementById('joursSlider'),
+      fraisInput: document.getElementById('fraisInput'),
+      cdiBrutInput: document.getElementById('cdiBrutInput'),
+      cdiBrutSlider: document.getElementById('cdiBrutSlider'),
+      aeVersementLiberatoire: document.getElementById('aeVersementLiberatoire'),
+      sasuRemunMode: document.getElementById('sasuRemunMode'),
+      includeSafetyBuffer: document.getElementById('includeSafetyBuffer'),
+      statutBtns: document.querySelectorAll('.statut-btn'),
+      
+      // Dynamic Panels
+      statutNotice: document.getElementById('statutNotice'),
+      aeOptions: document.getElementById('aeOptions'),
+      sasuOptions: document.getElementById('sasuOptions'),
+      caPrevisionnelBadge: document.getElementById('caPrevisionnelBadge'),
+      verdictBanner: document.getElementById('verdictBanner'),
+      legalAlertsBox: document.getElementById('legalAlertsBox'),
+
+      // Cards Freelance
+      cardStatutLabel: document.getElementById('cardStatutLabel'),
+      cardCaTotal: document.getElementById('cardCaTotal'),
+      freelanceNetNetTotal: document.getElementById('freelanceNetNetTotal'),
+      freelanceNetNetMonthly: document.getElementById('freelanceNetNetMonthly'),
+      flDetailCA: document.getElementById('flDetailCA'),
+      flDetailFrais: document.getElementById('flDetailFrais'),
+      flDetailCotisations: document.getElementById('flDetailCotisations'),
+      flDetailISRow: document.getElementById('flDetailISRow'),
+      flDetailIS: document.getElementById('flDetailIS'),
+      flDetailIR: document.getElementById('flDetailIR'),
+      flSafetyRating: document.getElementById('flSafetyRating'),
+
+      // Cards CDI
+      cardCdiBrut: document.getElementById('cardCdiBrut'),
+      cdiNetNetTotal: document.getElementById('cdiNetNetTotal'),
+      cdiNetNetMonthly: document.getElementById('cdiNetNetMonthly'),
+      cdiDetailSuperbrut: document.getElementById('cdiDetailSuperbrut'),
+      cdiDetailPatronales: document.getElementById('cdiDetailPatronales'),
+      cdiDetailSalariales: document.getElementById('cdiDetailSalariales'),
+      cdiDetailNetAvantIR: document.getElementById('cdiDetailNetAvantIR'),
+      cdiDetailIR: document.getElementById('cdiDetailIR'),
+
+      // Bars & Metrics
+      barFlValue: document.getElementById('barFlValue'),
+      barFlFill: document.getElementById('barFlFill'),
+      barCdiValue: document.getElementById('barCdiValue'),
+      barCdiFill: document.getElementById('barCdiFill'),
+      barSafetyContainer: document.getElementById('barSafetyContainer'),
+      barCdiSafetyValue: document.getElementById('barCdiSafetyValue'),
+      barCdiSafetyFill: document.getElementById('barCdiSafetyFill'),
+      tjmEquilibreValue: document.getElementById('tjmEquilibreValue'),
+      cdiSuperbrutJour: document.getElementById('cdiSuperbrutJour'),
+    };
+
+    // FORMATTERS
+    const fmt = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+    const fmtRaw = (val) => Math.round(val).toLocaleString('fr-FR') + ' €';
+
+    /* ------------------------------------------------------------
+       CALCULATION FUNCTIONS
+       ------------------------------------------------------------ */
+
+    // 1. Barème progressif de l'impôt sur le revenu (Célibataire 1 part, 2024/2025/2026)
+    function computeBaremeIR(netImposable) {
+      if (netImposable <= 11294) return 0;
+      let impot = 0;
+      const tranches = [
+        { max: 11294, rate: 0 },
+        { max: 28797, rate: 0.11 },
+        { max: 82341, rate: 0.30 },
+        { max: 177106, rate: 0.41 },
+        { max: Infinity, rate: 0.45 },
+      ];
+
+      let prevMax = 0;
+      for (const t of tranches) {
+        if (netImposable > prevMax) {
+          const taxableInTranche = Math.min(netImposable, t.max) - prevMax;
+          impot += taxableInTranche * t.rate;
+          prevMax = t.max;
+        } else {
+          break;
+        }
+      }
+      return Math.max(0, impot);
+    }
+
+    // 2. Calcul Salarié CDI
+    function calculateCDI(brutAnnuel, includeSafety) {
+      // Coût employeur (Superbrut) : ~43% de charges patronales pour un cadre
+      const chargesPatronales = brutAnnuel * 0.43;
+      const superbrut = brutAnnuel + chargesPatronales;
+
+      // Net de fiche de paie avant impôt : ~22% de cotisations salariales cadre
+      const chargesSalariales = brutAnnuel * 0.22;
+      const netAvantIR = brutAnnuel - chargesSalariales;
+
+      // Imposition sur le revenu : abattement forfaitaire de 10% pour frais pro
+      const baseImposableIR = netAvantIR * 0.90;
+      const ir = computeBaremeIR(baseImposableIR);
+
+      const netNetAnnuel = netAvantIR - ir;
+      const netNetMensuel = netNetAnnuel / 12;
+
+      // Valorisation monétaire du parachute social & RTT :
+      // - Chômage (ARE) : ~6.5% du brut
+      // - Mutuelle part patronale + prévoyance cadre : ~2 000 € / an
+      // - 10 jours de RTT + sécurité maintien salaire maladie : ~5.5% du brut
+      // Total approx : ~12% du brut + 1 800 €
+      const safetyValue = (brutAnnuel * 0.12) + 1800;
+
+      return {
+        brut: brutAnnuel,
+        superbrut,
+        chargesPatronales,
+        chargesSalariales,
+        netAvantIR,
+        ir,
+        netNetAnnuel,
+        netNetMensuel,
+        safetyValue,
+        netAvecSafety: netNetAnnuel + (includeSafety ? safetyValue : 0),
+        superbrutJour: superbrut / 218 // 218j convention forfait jours
+      };
+    }
+
+    // 3. Calcul Freelance
+    function calculateFreelance(statut, tjm, jours, frais, options) {
+      const ca = tjm * jours;
+      let cotisations = 0;
+      let impotSociete = 0;
+      let ir = 0;
+      let netNetAnnuel = 0;
+      let warningPlafondAE = false;
+      let warningTvaAE = false;
+
+      if (statut === 'AE') {
+        // Micro-Entreprise BNC (Prestations de service libérales)
+        // Seuil CA Micro 2024-2026 : 77 700 €
+        // Seuil Franchise TVA : ~39 100 €
+        if (ca > 77700) warningPlafondAE = true;
+        if (ca > 39100) warningTvaAE = true;
+
+        // Cotisations URSSAF CIPAV/SSI 2024/2026 : 23.2% + CFP (0.2%)
+        const tauxCotisAE = 0.234;
+        cotisations = ca * tauxCotisAE;
+
+        // Impôt sur le revenu
+        if (options.aeVersementLib) {
+          // Versement libératoire de l'IR : 2.2% du CA
+          ir = ca * 0.022;
+        } else {
+          // Barème IR avec abattement forfaitaire de 34% BNC
+          const baseImposable = ca * (1 - 0.34);
+          ir = computeBaremeIR(baseImposable);
+        }
+
+        // Reste net : En AE les frais ne sont pas déductibles des cotisations, mais sortent de la poche réelle !
+        netNetAnnuel = ca - cotisations - ir - frais;
+      } 
+      else if (statut === 'SASU_IS') {
+        // SASU à l'Impôt sur les Sociétés
+        const caNetFrais = Math.max(0, ca - frais);
+
+        if (options.sasuMode === 'dividendes_full') {
+          // 0 € salaire -> 0 cotisations sociales président (attention: 0 trimestre retraite validé)
+          // IS : 15% jusqu'à 42 500 €, 25% au-delà
+          const tranche15 = Math.min(caNetFrais, 42500);
+          const tranche25 = Math.max(0, caNetFrais - 42500);
+          impotSociete = (tranche15 * 0.15) + (tranche25 * 0.25);
+
+          const resultatNetDistribuable = Math.max(0, caNetFrais - impotSociete);
+          // Flat Tax (PFU) à 30% (17.2% prélèvements sociaux + 12.8% IR)
+          const flatTax = resultatNetDistribuable * 0.30;
+          cotisations = resultatNetDistribuable * 0.172; // part sociale de la flat tax
+          ir = resultatNetDistribuable * 0.128; // part fiscale
+          netNetAnnuel = resultatNetDistribuable - flatTax;
+        }
+        else if (options.sasuMode === 'mixte') {
+          // SMIC Annuel (~21 200 € brut) pour valider 4 trimestres de retraite et sécurité sociale
+          const salaireBrut = 21200;
+          const cotisPresident = salaireBrut * 0.78; // charges patronales + salariales assimilé salarié
+          const coutSalaire = salaireBrut + cotisPresident;
+
+          if (caNetFrais > coutSalaire) {
+            const beneficeAvantIS = caNetFrais - coutSalaire;
+            const tranche15 = Math.min(beneficeAvantIS, 42500);
+            const tranche25 = Math.max(0, beneficeAvantIS - 42500);
+            impotSociete = (tranche15 * 0.15) + (tranche25 * 0.25);
+
+            const dividendeNetIS = beneficeAvantIS - impotSociete;
+            const flatTax = dividendeNetIS * 0.30;
+            const salNetAvantIR = salaireBrut * 0.78;
+            const irSalaire = computeBaremeIR(salNetAvantIR * 0.90);
+
+            cotisations = cotisPresident + (dividendeNetIS * 0.172);
+            ir = irSalaire + (dividendeNetIS * 0.128);
+            netNetAnnuel = salNetAvantIR - irSalaire + (dividendeNetIS - flatTax);
+          } else {
+            // Le CA couvre à peine le salaire
+            cotisations = caNetFrais * 0.45;
+            netNetAnnuel = caNetFrais - cotisations;
+            impotSociete = 0;
+            ir = 0;
+          }
+        }
+        else { // 'salaire_full'
+          // Tout est sorti en rémunération de président : ~80% de cotisations par rapport au net
+          // Coût total = Net * 1.80  => Net = CA / 1.80
+          const netAvantIR = caNetFrais / 1.78;
+          cotisations = caNetFrais - netAvantIR;
+          impotSociete = 0;
+          ir = computeBaremeIR(netAvantIR * 0.90);
+          netNetAnnuel = netAvantIR - ir;
+        }
+      } 
+      else if (statut === 'SASU_IR') {
+        // SASU à l'Impôt sur le Revenu (Option possible les 5 premières années)
+        // Pas d'IS, pas de cotisations sociales sur les dividendes.
+        // Le bénéfice complet (CA - frais) est transparent et soumis au barème progressif de l'IR du foyer.
+        const benefice = Math.max(0, ca - frais);
+        // Note : En SASU à l'IR sans salaire, les dividendes ne subissent que 17.2% de prélèvements sociaux
+        const prelevementsSociaux = benefice * 0.172;
+        cotisations = prelevementsSociaux;
+        ir = computeBaremeIR(benefice);
+        impotSociete = 0;
+        netNetAnnuel = benefice - prelevementsSociaux - ir;
+      }
+
+      return {
+        ca,
+        frais,
+        cotisations,
+        impotSociete,
+        ir,
+        netNetAnnuel: Math.max(0, netNetAnnuel),
+        netNetMensuel: Math.max(0, netNetAnnuel) / 12,
+        warningPlafondAE,
+        warningTvaAE
+      };
+    }
+
+    // 4. Calcul du TJM d'équilibre (Goal Seek itératif)
+    function calculateTjmEquilibre(statut, targetNet, jours, frais, options) {
+      let low = 150;
+      let high = 2500;
+      let bestTjm = low;
+
+      for (let i = 0; i < 30; i++) {
+        const mid = (low + high) / 2;
+        const res = calculateFreelance(statut, mid, jours, frais, options);
+        if (res.netNetAnnuel < targetNet) {
+          low = mid;
+        } else {
+          high = mid;
+        }
+        bestTjm = mid;
+      }
+      return Math.ceil(bestTjm / 5) * 5; // Arrondi à 5€ près
+    }
+
+    /* ------------------------------------------------------------
+       UPDATE UI & RENDER
+       ------------------------------------------------------------ */
+    function updateSimulator() {
+      // 1. Lire les inputs
+      state.tjm = parseFloat(el.tjmInput.value) || 550;
+      state.jours = parseInt(el.joursInput.value) || 210;
+      state.frais = parseFloat(el.fraisInput.value) || 0;
+      state.cdiBrut = parseFloat(el.cdiBrutInput.value) || 65000;
+      state.aeVersementLib = el.aeVersementLiberatoire.checked;
+      state.sasuMode = el.sasuRemunMode.value;
+      state.includeSafetyBuffer = el.includeSafetyBuffer.checked;
+
+      // 2. Calculs
+      const cdi = calculateCDI(state.cdiBrut, state.includeSafetyBuffer);
+      const fl = calculateFreelance(state.statut, state.tjm, state.jours, state.frais, {
+        aeVersementLib: state.aeVersementLib,
+        sasuMode: state.sasuMode,
+      });
+
+      // Seuil d'équité : Compare avec le net en poche OU avec le net + amortisseur
+      const targetCdiNet = state.includeSafetyBuffer ? cdi.netAvecSafety : cdi.netNetAnnuel;
+      const tjmEquilibre = calculateTjmEquilibre(state.statut, targetCdiNet, state.jours, state.frais, {
+        aeVersementLib: state.aeVersementLib,
+        sasuMode: state.sasuMode
+      });
+
+      const ecartAnnuel = fl.netNetAnnuel - targetCdiNet;
+      const ecartMensuel = ecartAnnuel / 12;
+
+      // 3. Mise à jour de la bannière Verdict
+      renderVerdict(ecartAnnuel, ecartMensuel, fl, cdi);
+
+      // 4. Cartes Freelance & CDI
+      el.cardStatutLabel.textContent = getStatutLabel(state.statut);
+      el.caPrevisionnelBadge.textContent = `CA: ${fmt.format(fl.ca)}`;
+      el.cardCaTotal.textContent = `${fmt.format(fl.ca)} CA`;
+      el.freelanceNetNetTotal.textContent = fmt.format(fl.netNetAnnuel);
+      el.freelanceNetNetMonthly.textContent = `${fmt.format(fl.netNetMensuel)} / mois net`;
+      el.flDetailCA.textContent = fmt.format(fl.ca);
+      el.flDetailFrais.textContent = `- ${fmt.format(fl.frais)}`;
+      el.flDetailCotisations.textContent = `- ${fmt.format(fl.cotisations)}`;
+      el.flDetailIR.textContent = `- ${fmt.format(fl.ir)}`;
+
+      if (state.statut === 'SASU_IS') {
+        el.flDetailISRow.classList.remove('hidden');
+        el.flDetailIS.textContent = `- ${fmt.format(fl.impotSociete)}`;
+      } else {
+        el.flDetailISRow.classList.add('hidden');
+      }
+
+      // Safety status freelance
+      if (state.statut === 'AE') {
+        el.flSafetyRating.innerHTML = '⚠️ Urssaf de base, 0 ARE, Pas d\'indemnités chômage';
+      } else if (state.statut === 'SASU_IS' && state.sasuMode === 'dividendes_full') {
+        el.flSafetyRating.innerHTML = '🚨 100% Dividendes = 0 trimestre retraite, 0 couverture maladie';
+      } else {
+        el.flSafetyRating.innerHTML = '🛡️ Mutuelle déductible Madelin possible, 0 ARE';
+      }
+
+      // CDI Card
+      el.cardCdiBrut.textContent = `${fmt.format(cdi.brut)} Brut`;
+      el.cdiNetNetTotal.textContent = fmt.format(cdi.netNetAnnuel);
+      el.cdiNetNetMonthly.textContent = `${fmt.format(cdi.netNetMensuel)} / mois net`;
+      el.cdiDetailSuperbrut.textContent = fmt.format(cdi.superbrut);
+      el.cdiDetailPatronales.textContent = `- ${fmt.format(cdi.chargesPatronales)}`;
+      el.cdiDetailSalariales.textContent = `- ${fmt.format(cdi.chargesSalariales)}`;
+      el.cdiDetailNetAvantIR.textContent = fmt.format(cdi.netAvantIR);
+      el.cdiDetailIR.textContent = `- ${fmt.format(cdi.ir)}`;
+
+      // 5. Comparaison Graphique (Barres)
+      const maxGraphValue = Math.max(fl.netNetAnnuel, cdi.netAvecSafety, cdi.netNetAnnuel, 10000) * 1.15;
+      
+      const pctFl = Math.min(100, Math.max(5, (fl.netNetAnnuel / maxGraphValue) * 100));
+      const pctCdi = Math.min(100, Math.max(5, (cdi.netNetAnnuel / maxGraphValue) * 100));
+      const pctCdiSafety = Math.min(100, Math.max(5, (cdi.netAvecSafety / maxGraphValue) * 100));
+
+      el.barFlValue.textContent = fmt.format(fl.netNetAnnuel);
+      el.barFlFill.style.width = `${pctFl}%`;
+
+      el.barCdiValue.textContent = fmt.format(cdi.netNetAnnuel);
+      el.barCdiFill.style.width = `${pctCdi}%`;
+
+      if (state.includeSafetyBuffer) {
+        el.barSafetyContainer.classList.remove('hidden');
+        el.barCdiSafetyValue.textContent = fmt.format(cdi.netAvecSafety);
+        el.barCdiSafetyFill.style.width = `${pctCdiSafety}%`;
+      } else {
+        el.barSafetyContainer.classList.add('hidden');
+      }
+
+      // 6. Metrics
+      el.tjmEquilibreValue.textContent = `${tjmEquilibre} € / jour`;
+      el.cdiSuperbrutJour.textContent = `${fmt.format(cdi.superbrutJour)} / j`;
+
+      // 7. Legal Warnings & Notes
+      renderAlerts(fl);
+    }
+
+    function getStatutLabel(statut) {
+      if (statut === 'AE') return 'Auto-Entreprise';
+      if (statut === 'SASU_IS') return 'SASU à l\'IS';
+      if (statut === 'SASU_IR') return 'SASU à l\'IR';
+      return statut;
+    }
+
+    function renderVerdict(ecartAnnuel, ecartMensuel, fl, cdi) {
+      const banner = el.verdictBanner;
+      const isWinner = ecartAnnuel > 3000;
+      const isEquivalent = Math.abs(ecartAnnuel) <= 3000;
+      const isLoser = ecartAnnuel < -3000;
+
+      if (isWinner) {
+        banner.className = 'p-6 rounded-2xl border transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl bg-gradient-to-r from-emerald-950/60 to-slate-900 border-emerald-500/40 text-emerald-100';
+        banner.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="h-14 w-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-3xl shrink-0">
+              🚀
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  Freelance Nettement Gagnant
+                </span>
+                <span class="text-xs text-emerald-400/80 font-medium">À ce TJM de ${state.tjm}€</span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-black text-white mt-1">
+                + ${fmt.format(ecartAnnuel)} / an dans votre poche
+              </h3>
+              <p class="text-xs text-slate-300 mt-0.5">
+                Soit un bonus de <strong class="text-emerald-400 font-bold">+ ${fmt.format(ecartMensuel)} / mois</strong> net d'impôt par rapport au CDI de ${fmt.format(state.cdiBrut)}.
+              </p>
+            </div>
+          </div>
+          <div class="text-left md:text-right shrink-0">
+            <span class="text-xs text-slate-400 block">Surcoût du risque absorbé :</span>
+            <span class="text-sm font-semibold text-emerald-300">Votre prime de risque freelance est largement rentable.</span>
+          </div>
+        `;
+      } else if (isEquivalent) {
+        banner.className = 'p-6 rounded-2xl border transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl bg-gradient-to-r from-amber-950/60 to-slate-900 border-amber-500/40 text-amber-100';
+        banner.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="h-14 w-14 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl shrink-0">
+              ⚖️
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  Zone d'Équilibre Financier
+                </span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-black text-white mt-1">
+                Revenu net quasi-identique (~${fmt.format(Math.abs(ecartAnnuel))} d'écart)
+              </h3>
+              <p class="text-xs text-slate-300 mt-0.5">
+                À ce niveau de TJM, vous touchez l'équivalent du CDI mais <strong class="text-amber-300">sans la garantie de l'emploi ni l'assurance chômage</strong>.
+              </p>
+            </div>
+          </div>
+          <div class="text-left md:text-right shrink-0">
+            <span class="text-xs text-slate-400 block">Conseil négo :</span>
+            <span class="text-sm font-semibold text-amber-300">Visez au moins ${(state.tjm + 70)}€ pour couvrir l'intercontrat.</span>
+          </div>
+        `;
+      } else {
+        banner.className = 'p-6 rounded-2xl border transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl bg-gradient-to-r from-rose-950/60 to-slate-900 border-rose-500/40 text-rose-100';
+        banner.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="h-14 w-14 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-3xl shrink-0">
+              🛑
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                  Freelance à Perte face au CDI
+                </span>
+                <span class="text-xs text-rose-400/80 font-medium">TJM trop bas</span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-black text-white mt-1">
+                - ${fmt.format(Math.abs(ecartAnnuel))} / an en poche
+              </h3>
+              <p class="text-xs text-slate-300 mt-0.5">
+                Vous perdez l'équivalent de <strong class="text-rose-400 font-bold">${fmt.format(Math.abs(ecartMensuel))} / mois</strong> tout en portant 100% du risque de mission et d'intercontrat.
+              </p>
+            </div>
+          </div>
+          <div class="text-left md:text-right shrink-0">
+            <span class="text-xs text-slate-400 block">TJM minimum recommandé :</span>
+            <span class="text-sm font-semibold text-rose-300">${el.tjmEquilibreValue.textContent}</span>
+          </div>
+        `;
+      }
+    }
+
+    function renderAlerts(fl) {
+      const box = el.legalAlertsBox;
+      let alerts = [];
+
+      if (state.statut === 'AE') {
+        if (fl.warningPlafondAE) {
+          alerts.push(`
+            <div class="flex items-start gap-2 text-rose-400">
+              <span class="text-sm">⚠️</span>
+              <span><strong>Dépassement du seuil Micro-Entreprise (77 700 €) :</strong> Avec ${fmt.format(fl.ca)} de CA, vous sortez du régime micro après 2 années consécutives au-dessus du plafond. Une bascule en société (SASU/EURL) devient requise.</span>
+            </div>
+          `);
+        }
+        if (fl.warningTvaAE) {
+          alerts.push(`
+            <div class="flex items-start gap-2 text-amber-400">
+              <span class="text-sm">ℹ️</span>
+              <span><strong>TVA applicable :</strong> Au-delà de ~39 100 € de CA, vous devez facturer et reverser la TVA (20%). Vos devis devront obligatoirement être affichés en HT + TVA.</span>
+            </div>
+          `);
+        }
+        alerts.push(`
+          <div class="flex items-start gap-2 text-slate-400">
+            <span class="text-sm">📌</span>
+            <span><strong>Particularité AE :</strong> Les frais professionnels réels (${fmt.format(fl.frais)}) ne sont <em>pas déductibles</em> des cotisations URSSAF. C'est idéal tant que vos charges restent très faibles (&lt; 5-10% du CA).</span>
+          </div>
+        `);
+      } else if (state.statut === 'SASU_IS') {
+        alerts.push(`
+          <div class="flex items-start gap-2 text-indigo-300">
+            <span class="text-sm">🏢</span>
+            <span><strong>Avantage SASU IS :</strong> Vos frais réels de ${fmt.format(fl.frais)} réduisent directement le bénéfice imposable. Le matériel informatique (Mac, écran), licences SaaS, formations et abonnements télécoms sont payés par la société avant impôt.</span>
+          </div>
+        `);
+        if (state.sasuMode === 'dividendes_full') {
+          alerts.push(`
+            <div class="flex items-start gap-2 text-amber-400">
+              <span class="text-sm">⚠️</span>
+              <span><strong>Attention 100% Dividendes :</strong> Sans bulletin de paie, vous ne validez <strong>aucun trimestre de retraite</strong> de base et ne bénéficiez pas de maintien de salaire en cas d'accident ou arrêt de travail.</span>
+            </div>
+          `);
+        }
+      } else if (state.statut === 'SASU_IR') {
+        alerts.push(`
+          <div class="flex items-start gap-2 text-indigo-300">
+            <span class="text-sm">🔥</span>
+            <span><strong>SASU à l'IR :</strong> Régime fiscal temporaire (5 ans max). Le résultat net est directement intégré dans votre déclaration fiscale sans passer par l'IS ni la flat tax. Redoutablement efficace pour les foyers ayant des parts fiscales ou des tranches marginales raisonnables.</span>
+          </div>
+        `);
+      }
+
+      box.innerHTML = alerts.join('');
+    }
+
+    /* ------------------------------------------------------------
+       EVENT LISTENERS & BINDING
+       ------------------------------------------------------------ */
+
+    // Sync input <-> slider helper
+    function linkInputs(numberInput, sliderInput, callback) {
+      numberInput.addEventListener('input', () => {
+        sliderInput.value = numberInput.value;
+        callback();
+      });
+      sliderInput.addEventListener('input', () => {
+        numberInput.value = sliderInput.value;
+        callback();
+      });
+    }
+
+    linkInputs(el.tjmInput, el.tjmSlider, updateSimulator);
+    linkInputs(el.joursInput, el.joursSlider, updateSimulator);
+    linkInputs(el.cdiBrutInput, el.cdiBrutSlider, updateSimulator);
+
+    el.fraisInput.addEventListener('input', updateSimulator);
+    el.aeVersementLiberatoire.addEventListener('change', updateSimulator);
+    el.sasuRemunMode.addEventListener('change', updateSimulator);
+    el.includeSafetyBuffer.addEventListener('change', updateSimulator);
+
+    // Statut Buttons Switcher
+    el.statutBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        el.statutBtns.forEach(b => {
+          b.classList.remove('active', 'border-indigo-500/50', 'bg-indigo-600/20', 'text-indigo-200');
+          b.classList.add('border-slate-750', 'bg-slate-800/60', 'text-slate-300');
+        });
+
+        btn.classList.add('active', 'border-indigo-500/50', 'bg-indigo-600/20', 'text-indigo-200');
+        btn.classList.remove('border-slate-750', 'bg-slate-800/60', 'text-slate-300');
+
+        state.statut = btn.dataset.statut;
+
+        // Modifier frais par défaut et affichages contextuels
+        if (state.statut === 'AE') {
+          el.aeOptions.classList.remove('hidden');
+          el.sasuOptions.classList.add('hidden');
+          el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais pas de déduction de frais.';
+          if (el.fraisInput.value > 2000) el.fraisInput.value = 1200;
+        } else if (state.statut === 'SASU_IS') {
+          el.aeOptions.classList.add('hidden');
+          el.sasuOptions.classList.remove('hidden');
+          el.statutNotice.textContent = 'Déduction de tous les frais professionnels. Choix d\'arbitrage entre salaire président et dividendes (Flat Tax 30%).';
+          if (el.fraisInput.value < 2500) el.fraisInput.value = 3500; // Compta + frais de tenue
+        } else if (state.statut === 'SASU_IR') {
+          el.aeOptions.classList.add('hidden');
+          el.sasuOptions.classList.add('hidden');
+          el.statutNotice.textContent = 'Transparence fiscale totale pendant 5 ans : pas d\'impôt sur les sociétés (IS), bénéfice imposé directement au barème IR.';
+          if (el.fraisInput.value < 2500) el.fraisInput.value = 3500;
+        }
+
+        updateSimulator();
+      });
+    });
+
+    // Initialize Default State Notice
+    el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais pas de déduction de frais.';
+
+    // First initial render
+    updateSimulator();
+
+  </script>
+</body>
+</html>
