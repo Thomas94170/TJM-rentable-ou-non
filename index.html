@@ -96,9 +96,12 @@
           <!-- Statut Juridique -->
           <div class="space-y-2">
             <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wide">Statut d'activité</label>
-            <div class="grid grid-cols-3 gap-2">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <button type="button" data-statut="AE" class="statut-btn active text-center p-2.5 rounded-xl border border-indigo-500/50 bg-indigo-600/20 text-indigo-200 text-xs font-semibold transition hover:bg-indigo-600/30">
                 Auto-Entr. (BNC)
+              </button>
+              <button type="button" data-statut="EURL_IS" class="statut-btn text-center p-2.5 rounded-xl border border-slate-750 bg-slate-800/60 text-slate-300 text-xs font-semibold transition hover:bg-slate-800">
+                EURL à l'IS
               </button>
               <button type="button" data-statut="SASU_IS" class="statut-btn text-center p-2.5 rounded-xl border border-slate-750 bg-slate-800/60 text-slate-300 text-xs font-semibold transition hover:bg-slate-800">
                 SASU à l'IS
@@ -151,11 +154,28 @@
           <div class="space-y-2">
             <div class="flex justify-between items-center text-xs">
               <div>
-                <span class="font-semibold text-slate-300">Frais pro annuels (€ HT)</span>
+                <label for="fraisInput" class="font-semibold text-slate-300">Frais pro annuels (€ HT)</label>
                 <span class="text-[10px] text-slate-400 block">Compta, banque, ordi, RC Pro, coworking</span>
               </div>
               <div class="flex items-center gap-1">
-                <input type="number" id="fraisInput" min="0" max="50000" step="200" value="1200" class="w-24 px-2 py-1 bg-slate-950 border border-slate-700 rounded-lg text-right font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 text-sm">
+                <input type="number" id="fraisInput" min="0" max="50000" step="100" value="1200" class="w-24 px-2 py-1 bg-slate-950 border border-slate-700 rounded-lg text-right font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 text-sm">
+                <span class="text-slate-400 font-medium">€</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mutuelle & Prévoyance -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <div>
+                <label for="mutuelleInput" class="font-semibold text-slate-300 flex items-center gap-1.5">
+                  <span>Mutuelle & Prévoyance (€ / an)</span>
+                  <span id="mutuelleFiscalBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-medium">Payé en perso</span>
+                </label>
+                <span class="text-[10px] text-slate-400 block">Santé + maintien de revenu (Loi Madelin en EURL, société ou perso)</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input type="number" id="mutuelleInput" min="0" max="15000" step="100" value="1500" class="w-24 px-2 py-1 bg-slate-950 border border-slate-700 rounded-lg text-right font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 text-sm">
                 <span class="text-slate-400 font-medium">€</span>
               </div>
             </div>
@@ -170,9 +190,19 @@
             <p class="text-[11px] text-slate-500 leading-tight">Activable si votre RFR N-2 est inférieur au plafond légal fiscal.</p>
           </div>
 
+          <div id="eurlOptions" class="hidden p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs space-y-3">
+            <div class="space-y-1">
+              <label for="eurlRemunMode" class="block text-slate-300 font-medium">Stratégie de rémunération EURL IS (Gérant TNS) :</label>
+              <select id="eurlRemunMode" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+                <option value="tns_full">100% Rémunération Gérant TNS (0 € d'IS, cotisations ~45%)</option>
+                <option value="tns_is_optim">Rémunération TNS + Bénéfice IS 15% (Max 42 500 € à l'IS)</option>
+              </select>
+            </div>
+          </div>
+
           <div id="sasuOptions" class="hidden p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs space-y-3">
             <div class="space-y-1">
-              <label class="block text-slate-300 font-medium">Stratégie de rémunération SASU IS :</label>
+              <label for="sasuRemunMode" class="block text-slate-300 font-medium">Stratégie de rémunération SASU IS :</label>
               <select id="sasuRemunMode" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
                 <option value="dividendes_full">100% Dividendes (Optimisé Flat Tax 30%)</option>
                 <option value="mixte">Mixte (SMIC Salaire pour sécu + Dividendes)</option>
@@ -231,7 +261,7 @@
               <input type="checkbox" id="includeSafetyBuffer" checked class="h-4 w-4 rounded border-slate-700 bg-slate-900 text-indigo-600 focus:ring-0">
             </div>
             <p class="text-[11px] text-slate-400 leading-relaxed">
-              Valorise financièrement la couverture chômage (ARE France Travail), la mutuelle prise à 50%, la prévoyance cadre et le risque d'intercontrat non rémunéré (estimé à ~12% du brut).
+              Valorise financièrement la couverture chômage (ARE France Travail), les RTT payés et le maintien de salaire maladie / intercontrat (estimé à ~12% du brut annuel ; la mutuelle/prévoyance étant désormais saisie au réel côté Freelance).
             </p>
           </div>
 
@@ -272,6 +302,13 @@
                 <div class="flex justify-between">
                   <span class="text-slate-400">Frais pro déduits</span>
                   <span class="font-mono text-slate-400" id="flDetailFrais">- 0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400 flex items-center gap-1">
+                    <span>Mutuelle & Prévoyance</span>
+                    <span id="flDetailMutuelleTag" class="text-[10px] text-slate-500">(Perso)</span>
+                  </span>
+                  <span class="font-mono text-slate-400" id="flDetailMutuelle">- 0 €</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-slate-400">Cotisations sociales (URSSAF)</span>
@@ -459,11 +496,13 @@
 
     // STATE
     const state = {
-      statut: 'AE', // 'AE', 'SASU_IS', 'SASU_IR'
+      statut: 'AE', // 'AE', 'EURL_IS', 'SASU_IS', 'SASU_IR'
       tjm: 550,
       jours: 210,
       frais: 1200,
+      mutuelle: 1500,
       aeVersementLib: false,
+      eurlMode: 'tns_full',
       sasuMode: 'dividendes_full',
       cdiBrut: 65000,
       includeSafetyBuffer: true,
@@ -477,9 +516,12 @@
       joursInput: document.getElementById('joursInput'),
       joursSlider: document.getElementById('joursSlider'),
       fraisInput: document.getElementById('fraisInput'),
+      mutuelleInput: document.getElementById('mutuelleInput'),
+      mutuelleFiscalBadge: document.getElementById('mutuelleFiscalBadge'),
       cdiBrutInput: document.getElementById('cdiBrutInput'),
       cdiBrutSlider: document.getElementById('cdiBrutSlider'),
       aeVersementLiberatoire: document.getElementById('aeVersementLiberatoire'),
+      eurlRemunMode: document.getElementById('eurlRemunMode'),
       sasuRemunMode: document.getElementById('sasuRemunMode'),
       includeSafetyBuffer: document.getElementById('includeSafetyBuffer'),
       statutBtns: document.querySelectorAll('.statut-btn'),
@@ -487,6 +529,7 @@
       // Dynamic Panels
       statutNotice: document.getElementById('statutNotice'),
       aeOptions: document.getElementById('aeOptions'),
+      eurlOptions: document.getElementById('eurlOptions'),
       sasuOptions: document.getElementById('sasuOptions'),
       caPrevisionnelBadge: document.getElementById('caPrevisionnelBadge'),
       verdictBanner: document.getElementById('verdictBanner'),
@@ -499,6 +542,8 @@
       freelanceNetNetMonthly: document.getElementById('freelanceNetNetMonthly'),
       flDetailCA: document.getElementById('flDetailCA'),
       flDetailFrais: document.getElementById('flDetailFrais'),
+      flDetailMutuelle: document.getElementById('flDetailMutuelle'),
+      flDetailMutuelleTag: document.getElementById('flDetailMutuelleTag'),
       flDetailCotisations: document.getElementById('flDetailCotisations'),
       flDetailISRow: document.getElementById('flDetailISRow'),
       flDetailIS: document.getElementById('flDetailIS'),
@@ -577,12 +622,11 @@
       const netNetAnnuel = netAvantIR - ir;
       const netNetMensuel = netNetAnnuel / 12;
 
-      // Valorisation monétaire du parachute social & RTT :
+      // Valorisation monétaire du parachute social & RTT (hors mutuelle/prévoyance désormais déduites au réel côté Freelance) :
       // - Chômage (ARE) : ~6.5% du brut
-      // - Mutuelle part patronale + prévoyance cadre : ~2 000 € / an
       // - 10 jours de RTT + sécurité maintien salaire maladie : ~5.5% du brut
-      // Total approx : ~12% du brut + 1 800 €
-      const safetyValue = (brutAnnuel * 0.12) + 1800;
+      // Total approx : ~12% du brut
+      const safetyValue = brutAnnuel * 0.12;
 
       return {
         brut: brutAnnuel,
@@ -600,12 +644,13 @@
     }
 
     // 3. Calcul Freelance
-    function calculateFreelance(statut, tjm, jours, frais, options) {
+    function calculateFreelance(statut, tjm, jours, frais, mutuelle, options) {
       const ca = tjm * jours;
       let cotisations = 0;
       let impotSociete = 0;
       let ir = 0;
       let netNetAnnuel = 0;
+      let mutuelleMode = 'Perso'; // 'Perso', 'Madelin', 'Société'
       let warningPlafondAE = false;
       let warningTvaAE = false;
 
@@ -630,15 +675,46 @@
           ir = computeBaremeIR(baseImposable);
         }
 
-        // Reste net : En AE les frais ne sont pas déductibles des cotisations, mais sortent de la poche réelle !
-        netNetAnnuel = ca - cotisations - ir - frais;
+        // Reste net : En AE les frais et la mutuelle ne sont pas déductibles et sortent de la poche personnelle
+        mutuelleMode = 'Payé en perso';
+        netNetAnnuel = ca - cotisations - ir - frais - mutuelle;
       } 
+      else if (statut === 'EURL_IS') {
+        // EURL à l'IS (Gérant Majoritaire TNS)
+        // Les frais pro et la mutuelle/prévoyance Loi Madelin sont déduits par la société
+        mutuelleMode = 'Madelin déduit';
+        const disponibleSociete = Math.max(0, ca - frais - mutuelle);
+
+        if (options.eurlMode === 'tns_full') {
+          // 100% du disponible versé en Rémunération Gérant TNS -> 0 € d'IS
+          // Cotisations sociales TNS : ~45% de la rémunération nette (soit Rémunération Nette = Disponible / 1.45)
+          const remNetAvantIR = disponibleSociete / 1.45;
+          cotisations = disponibleSociete - remNetAvantIR;
+          impotSociete = 0;
+          // Abattement forfaitaire de 10% sur la rémunération de gérance à l'IR
+          ir = computeBaremeIR(remNetAvantIR * 0.90);
+          netNetAnnuel = remNetAvantIR - ir;
+        } else {
+          // 'tns_is_optim' : Plafonner le bénéfice laissé à l'IS au taux réduit de 15% (max 42 500 €)
+          // et verser tout le surplus en rémunération Gérant TNS (~45% de cotisations + IR)
+          const beneficeCibleIS = Math.min(disponibleSociete, 42500);
+          impotSociete = beneficeCibleIS * 0.15;
+          const tresoNetteIS = beneficeCibleIS - impotSociete;
+
+          const enveloppeTNS = Math.max(0, disponibleSociete - beneficeCibleIS);
+          const remNetAvantIR = enveloppeTNS / 1.45;
+          cotisations = enveloppeTNS - remNetAvantIR;
+          ir = computeBaremeIR(remNetAvantIR * 0.90);
+
+          netNetAnnuel = (remNetAvantIR - ir) + tresoNetteIS;
+        }
+      }
       else if (statut === 'SASU_IS') {
         // SASU à l'Impôt sur les Sociétés
-        const caNetFrais = Math.max(0, ca - frais);
-
         if (options.sasuMode === 'dividendes_full') {
-          // 0 € salaire -> 0 cotisations sociales président (attention: 0 trimestre retraite validé)
+          // 0 € salaire -> La mutuelle ne peut pas être passée sur la société (pas de bulletin de paie)
+          mutuelleMode = 'Payé en perso';
+          const caNetFrais = Math.max(0, ca - frais);
           // IS : 15% jusqu'à 42 500 €, 25% au-delà
           const tranche15 = Math.min(caNetFrais, 42500);
           const tranche25 = Math.max(0, caNetFrais - 42500);
@@ -649,9 +725,12 @@
           const flatTax = resultatNetDistribuable * 0.30;
           cotisations = resultatNetDistribuable * 0.172; // part sociale de la flat tax
           ir = resultatNetDistribuable * 0.128; // part fiscale
-          netNetAnnuel = resultatNetDistribuable - flatTax;
+          netNetAnnuel = resultatNetDistribuable - flatTax - mutuelle;
         }
         else if (options.sasuMode === 'mixte') {
+          // Avec bulletin de paie (SMIC), la mutuelle d'entreprise / prévoyance est déductible des charges société
+          mutuelleMode = 'Société déduit';
+          const caNetFrais = Math.max(0, ca - frais - mutuelle);
           // SMIC Annuel (~21 200 € brut) pour valider 4 trimestres de retraite et sécurité sociale
           const salaireBrut = 21200;
           const cotisPresident = salaireBrut * 0.78; // charges patronales + salariales assimilé salarié
@@ -680,8 +759,9 @@
           }
         }
         else { // 'salaire_full'
-          // Tout est sorti en rémunération de président : ~80% de cotisations par rapport au net
-          // Coût total = Net * 1.80  => Net = CA / 1.80
+          // Tout est sorti en rémunération de président : mutuelle/prévoyance passée en charge société
+          mutuelleMode = 'Société déduit';
+          const caNetFrais = Math.max(0, ca - frais - mutuelle);
           const netAvantIR = caNetFrais / 1.78;
           cotisations = caNetFrais - netAvantIR;
           impotSociete = 0;
@@ -690,21 +770,22 @@
         }
       } 
       else if (statut === 'SASU_IR') {
-        // SASU à l'Impôt sur le Revenu (Option possible les 5 premières années)
-        // Pas d'IS, pas de cotisations sociales sur les dividendes.
-        // Le bénéfice complet (CA - frais) est transparent et soumis au barème progressif de l'IR du foyer.
+        // SASU à l'Impôt sur le Revenu (Option possible les 5 premières années, sans salaire)
+        mutuelleMode = 'Payé en perso';
         const benefice = Math.max(0, ca - frais);
-        // Note : En SASU à l'IR sans salaire, les dividendes ne subissent que 17.2% de prélèvements sociaux
+        // Note : En SASU à l'IR sans salaire, le bénéfice subit 17.2% de prélèvements sociaux
         const prelevementsSociaux = benefice * 0.172;
         cotisations = prelevementsSociaux;
         ir = computeBaremeIR(benefice);
         impotSociete = 0;
-        netNetAnnuel = benefice - prelevementsSociaux - ir;
+        netNetAnnuel = benefice - prelevementsSociaux - ir - mutuelle;
       }
 
       return {
         ca,
         frais,
+        mutuelle,
+        mutuelleMode,
         cotisations,
         impotSociete,
         ir,
@@ -716,14 +797,14 @@
     }
 
     // 4. Calcul du TJM d'équilibre (Goal Seek itératif)
-    function calculateTjmEquilibre(statut, targetNet, jours, frais, options) {
+    function calculateTjmEquilibre(statut, targetNet, jours, frais, mutuelle, options) {
       let low = 150;
       let high = 2500;
       let bestTjm = low;
 
       for (let i = 0; i < 30; i++) {
         const mid = (low + high) / 2;
-        const res = calculateFreelance(statut, mid, jours, frais, options);
+        const res = calculateFreelance(statut, mid, jours, frais, mutuelle, options);
         if (res.netNetAnnuel < targetNet) {
           low = mid;
         } else {
@@ -742,32 +823,42 @@
       state.tjm = parseFloat(el.tjmInput.value) || 550;
       state.jours = parseInt(el.joursInput.value) || 210;
       state.frais = parseFloat(el.fraisInput.value) || 0;
+      state.mutuelle = parseFloat(el.mutuelleInput.value) || 0;
       state.cdiBrut = parseFloat(el.cdiBrutInput.value) || 65000;
       state.aeVersementLib = el.aeVersementLiberatoire.checked;
+      state.eurlMode = el.eurlRemunMode.value;
       state.sasuMode = el.sasuRemunMode.value;
       state.includeSafetyBuffer = el.includeSafetyBuffer.checked;
 
+      const flOptions = {
+        aeVersementLib: state.aeVersementLib,
+        eurlMode: state.eurlMode,
+        sasuMode: state.sasuMode,
+      };
+
       // 2. Calculs
       const cdi = calculateCDI(state.cdiBrut, state.includeSafetyBuffer);
-      const fl = calculateFreelance(state.statut, state.tjm, state.jours, state.frais, {
-        aeVersementLib: state.aeVersementLib,
-        sasuMode: state.sasuMode,
-      });
+      const fl = calculateFreelance(state.statut, state.tjm, state.jours, state.frais, state.mutuelle, flOptions);
 
       // Seuil d'équité : Compare avec le net en poche OU avec le net + amortisseur
       const targetCdiNet = state.includeSafetyBuffer ? cdi.netAvecSafety : cdi.netNetAnnuel;
-      const tjmEquilibre = calculateTjmEquilibre(state.statut, targetCdiNet, state.jours, state.frais, {
-        aeVersementLib: state.aeVersementLib,
-        sasuMode: state.sasuMode
-      });
+      const tjmEquilibre = calculateTjmEquilibre(state.statut, targetCdiNet, state.jours, state.frais, state.mutuelle, flOptions);
 
       const ecartAnnuel = fl.netNetAnnuel - targetCdiNet;
       const ecartMensuel = ecartAnnuel / 12;
 
-      // 3. Mise à jour de la bannière Verdict
+      // 3. Mise à jour du badge fiscal de la mutuelle
+      el.mutuelleFiscalBadge.textContent = fl.mutuelleMode;
+      if (fl.mutuelleMode === 'Payé en perso') {
+        el.mutuelleFiscalBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium';
+      } else {
+        el.mutuelleFiscalBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium';
+      }
+
+      // 4. Mise à jour de la bannière Verdict
       renderVerdict(ecartAnnuel, ecartMensuel, fl, cdi);
 
-      // 4. Cartes Freelance & CDI
+      // 5. Cartes Freelance & CDI
       el.cardStatutLabel.textContent = getStatutLabel(state.statut);
       el.caPrevisionnelBadge.textContent = `CA: ${fmt.format(fl.ca)}`;
       el.cardCaTotal.textContent = `${fmt.format(fl.ca)} CA`;
@@ -775,10 +866,12 @@
       el.freelanceNetNetMonthly.textContent = `${fmt.format(fl.netNetMensuel)} / mois net`;
       el.flDetailCA.textContent = fmt.format(fl.ca);
       el.flDetailFrais.textContent = `- ${fmt.format(fl.frais)}`;
+      el.flDetailMutuelle.textContent = `- ${fmt.format(fl.mutuelle)}`;
+      el.flDetailMutuelleTag.textContent = `(${fl.mutuelleMode})`;
       el.flDetailCotisations.textContent = `- ${fmt.format(fl.cotisations)}`;
       el.flDetailIR.textContent = `- ${fmt.format(fl.ir)}`;
 
-      if (state.statut === 'SASU_IS') {
+      if (state.statut === 'SASU_IS' || (state.statut === 'EURL_IS' && fl.impotSociete > 0)) {
         el.flDetailISRow.classList.remove('hidden');
         el.flDetailIS.textContent = `- ${fmt.format(fl.impotSociete)}`;
       } else {
@@ -787,11 +880,13 @@
 
       // Safety status freelance
       if (state.statut === 'AE') {
-        el.flSafetyRating.innerHTML = '⚠️ Urssaf de base, 0 ARE, Pas d\'indemnités chômage';
+        el.flSafetyRating.innerHTML = '⚠️ Urssaf de base, 0 ARE, Mutuelle non déductible';
+      } else if (state.statut === 'EURL_IS') {
+        el.flSafetyRating.innerHTML = '🛡️ Gérant TNS (SSI), Mutuelle & Prévoyance Madelin déduites, 0 ARE';
       } else if (state.statut === 'SASU_IS' && state.sasuMode === 'dividendes_full') {
-        el.flSafetyRating.innerHTML = '🚨 100% Dividendes = 0 trimestre retraite, 0 couverture maladie';
+        el.flSafetyRating.innerHTML = '🚨 100% Dividendes = 0 trimestre retraite, Mutuelle payée en perso';
       } else {
-        el.flSafetyRating.innerHTML = '🛡️ Mutuelle déductible Madelin possible, 0 ARE';
+        el.flSafetyRating.innerHTML = '🛡️ Assimilé salarié (Régime Général), Mutuelle société déduite, 0 ARE';
       }
 
       // CDI Card
@@ -804,7 +899,7 @@
       el.cdiDetailNetAvantIR.textContent = fmt.format(cdi.netAvantIR);
       el.cdiDetailIR.textContent = `- ${fmt.format(cdi.ir)}`;
 
-      // 5. Comparaison Graphique (Barres)
+      // 6. Comparaison Graphique (Barres)
       const maxGraphValue = Math.max(fl.netNetAnnuel, cdi.netAvecSafety, cdi.netNetAnnuel, 10000) * 1.15;
       
       const pctFl = Math.min(100, Math.max(5, (fl.netNetAnnuel / maxGraphValue) * 100));
@@ -825,16 +920,17 @@
         el.barSafetyContainer.classList.add('hidden');
       }
 
-      // 6. Metrics
+      // 7. Metrics
       el.tjmEquilibreValue.textContent = `${tjmEquilibre} € / jour`;
       el.cdiSuperbrutJour.textContent = `${fmt.format(cdi.superbrutJour)} / j`;
 
-      // 7. Legal Warnings & Notes
+      // 8. Legal Warnings & Notes
       renderAlerts(fl);
     }
 
     function getStatutLabel(statut) {
       if (statut === 'AE') return 'Auto-Entreprise';
+      if (statut === 'EURL_IS') return 'EURL à l\'IS';
       if (statut === 'SASU_IS') return 'SASU à l\'IS';
       if (statut === 'SASU_IR') return 'SASU à l\'IR';
       return statut;
@@ -938,7 +1034,7 @@
           alerts.push(`
             <div class="flex items-start gap-2 text-rose-400">
               <span class="text-sm">⚠️</span>
-              <span><strong>Dépassement du seuil Micro-Entreprise (77 700 €) :</strong> Avec ${fmt.format(fl.ca)} de CA, vous sortez du régime micro après 2 années consécutives au-dessus du plafond. Une bascule en société (SASU/EURL) devient requise.</span>
+              <span><strong>Dépassement du seuil Micro-Entreprise (77 700 €) :</strong> Avec ${fmt.format(fl.ca)} de CA, vous sortez du régime micro après 2 années consécutives au-dessus du plafond. Une bascule en société (EURL/SASU) devient requise.</span>
             </div>
           `);
         }
@@ -953,9 +1049,24 @@
         alerts.push(`
           <div class="flex items-start gap-2 text-slate-400">
             <span class="text-sm">📌</span>
-            <span><strong>Particularité AE :</strong> Les frais professionnels réels (${fmt.format(fl.frais)}) ne sont <em>pas déductibles</em> des cotisations URSSAF. C'est idéal tant que vos charges restent très faibles (&lt; 5-10% du CA).</span>
+            <span><strong>Particularité AE :</strong> Vos frais professionnels (${fmt.format(fl.frais)}) et votre mutuelle/prévoyance (${fmt.format(fl.mutuelle)}) ne sont <em>pas déductibles</em> des cotisations URSSAF et sont payés avec votre argent net.</span>
           </div>
         `);
+      } else if (state.statut === 'EURL_IS') {
+        alerts.push(`
+          <div class="flex items-start gap-2 text-emerald-300">
+            <span class="text-sm">⚡</span>
+            <span><strong>Atout majeur EURL à l'IS (Gérant TNS) :</strong> Les cotisations sociales ne représentent que <strong>~45% de la rémunération nette</strong> (contre ~78% en SASU). En prime, votre mutuelle & prévoyance (${fmt.format(fl.mutuelle)}) sont déductibles via la <strong>Loi Madelin</strong>.</span>
+          </div>
+        `);
+        if (state.eurlMode === 'tns_is_optim') {
+          alerts.push(`
+            <div class="flex items-start gap-2 text-indigo-300">
+              <span class="text-sm">🏦</span>
+              <span><strong>Optimisation IS à 15% :</strong> Jusqu'à 42 500 € de bénéfice sont laissés à l'IS au taux réduit de 15% (soit ${fmt.format(fl.impotSociete)} d'IS) pour capitaliser en trésorerie/holding, tandis que le surplus est versé en rémunération TNS. Attention : en EURL, les dividendes versés en direct au-delà de 10% du capital social supportent les charges TNS.</span>
+            </div>
+          `);
+        }
       } else if (state.statut === 'SASU_IS') {
         alerts.push(`
           <div class="flex items-start gap-2 text-indigo-300">
@@ -967,7 +1078,7 @@
           alerts.push(`
             <div class="flex items-start gap-2 text-amber-400">
               <span class="text-sm">⚠️</span>
-              <span><strong>Attention 100% Dividendes :</strong> Sans bulletin de paie, vous ne validez <strong>aucun trimestre de retraite</strong> de base et ne bénéficiez pas de maintien de salaire en cas d'accident ou arrêt de travail.</span>
+              <span><strong>Attention 100% Dividendes :</strong> Sans bulletin de paie, vous ne validez <strong>aucun trimestre de retraite</strong> et la société ne peut pas déduire votre mutuelle (${fmt.format(fl.mutuelle)} payés en perso après impôts).</span>
             </div>
           `);
         }
@@ -975,7 +1086,7 @@
         alerts.push(`
           <div class="flex items-start gap-2 text-indigo-300">
             <span class="text-sm">🔥</span>
-            <span><strong>SASU à l'IR :</strong> Régime fiscal temporaire (5 ans max). Le résultat net est directement intégré dans votre déclaration fiscale sans passer par l'IS ni la flat tax. Redoutablement efficace pour les foyers ayant des parts fiscales ou des tranches marginales raisonnables.</span>
+            <span><strong>SASU à l'IR :</strong> Régime fiscal temporaire (5 ans max). Le résultat net est directement intégré dans votre déclaration fiscale sans passer par l'IS ni la flat tax. Sans salaire de président, la mutuelle (${fmt.format(fl.mutuelle)}) reste payée en perso.</span>
           </div>
         `);
       }
@@ -1004,7 +1115,9 @@
     linkInputs(el.cdiBrutInput, el.cdiBrutSlider, updateSimulator);
 
     el.fraisInput.addEventListener('input', updateSimulator);
+    el.mutuelleInput.addEventListener('input', updateSimulator);
     el.aeVersementLiberatoire.addEventListener('change', updateSimulator);
+    el.eurlRemunMode.addEventListener('change', updateSimulator);
     el.sasuRemunMode.addEventListener('change', updateSimulator);
     el.includeSafetyBuffer.addEventListener('change', updateSimulator);
 
@@ -1024,16 +1137,25 @@
         // Modifier frais par défaut et affichages contextuels
         if (state.statut === 'AE') {
           el.aeOptions.classList.remove('hidden');
+          el.eurlOptions.classList.add('hidden');
           el.sasuOptions.classList.add('hidden');
-          el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais pas de déduction de frais.';
+          el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais aucune déduction de frais ni de mutuelle.';
           if (el.fraisInput.value > 2000) el.fraisInput.value = 1200;
+        } else if (state.statut === 'EURL_IS') {
+          el.aeOptions.classList.add('hidden');
+          el.eurlOptions.classList.remove('hidden');
+          el.sasuOptions.classList.add('hidden');
+          el.statutNotice.textContent = 'Statut roi du freelance long terme : cotisations TNS réduites (~45% du net), frais pro et mutuelle/prévoyance Loi Madelin 100% déductibles.';
+          if (el.fraisInput.value < 2500) el.fraisInput.value = 3500; // Compta + frais de tenue
         } else if (state.statut === 'SASU_IS') {
           el.aeOptions.classList.add('hidden');
+          el.eurlOptions.classList.add('hidden');
           el.sasuOptions.classList.remove('hidden');
           el.statutNotice.textContent = 'Déduction de tous les frais professionnels. Choix d\'arbitrage entre salaire président et dividendes (Flat Tax 30%).';
           if (el.fraisInput.value < 2500) el.fraisInput.value = 3500; // Compta + frais de tenue
         } else if (state.statut === 'SASU_IR') {
           el.aeOptions.classList.add('hidden');
+          el.eurlOptions.classList.add('hidden');
           el.sasuOptions.classList.add('hidden');
           el.statutNotice.textContent = 'Transparence fiscale totale pendant 5 ans : pas d\'impôt sur les sociétés (IS), bénéfice imposé directement au barème IR.';
           if (el.fraisInput.value < 2500) el.fraisInput.value = 3500;
@@ -1044,7 +1166,7 @@
     });
 
     // Initialize Default State Notice
-    el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais pas de déduction de frais.';
+    el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais aucune déduction de frais ni de mutuelle.';
 
     // First initial render
     updateSimulator();
