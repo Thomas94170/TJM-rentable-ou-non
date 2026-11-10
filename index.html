@@ -181,6 +181,23 @@
             </div>
           </div>
 
+          <!-- CFE (Cotisation Foncière des Entreprises) -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <div>
+                <label for="cfeInput" class="font-semibold text-slate-300 flex items-center gap-1.5">
+                  <span>CFE annuelle (€ / an)</span>
+                  <span id="cfeFiscalBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-medium">Payé en perso</span>
+                </label>
+                <span class="text-[10px] text-slate-400 block">Cotisation Foncière des Entreprises (0 € la 1re année de création)</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input type="number" id="cfeInput" min="0" max="10000" step="50" value="500" class="w-24 px-2 py-1 bg-slate-950 border border-slate-700 rounded-lg text-right font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 text-sm">
+                <span class="text-slate-400 font-medium">€</span>
+              </div>
+            </div>
+          </div>
+
           <!-- Options Supplémentaires Freelance (Selon Statut) -->
           <div id="aeOptions" class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs space-y-2">
             <div class="flex items-center justify-between">
@@ -195,8 +212,19 @@
               <label for="eurlRemunMode" class="block text-slate-300 font-medium">Stratégie de rémunération EURL IS (Gérant TNS) :</label>
               <select id="eurlRemunMode" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
                 <option value="tns_full">100% Rémunération Gérant TNS (0 € d'IS, cotisations ~45%)</option>
-                <option value="tns_is_optim">Rémunération TNS + Bénéfice IS 15% (Max 42 500 € à l'IS)</option>
+                <option value="tns_dividendes">Rémunération TNS (36k€) + Dividendes versés (Seuil 10% capital)</option>
+                <option value="tns_is_optim">Rémunération TNS + Trésorerie capitalisée IS 15% (Max 42 500 €)</option>
               </select>
+            </div>
+            <div id="eurlCapitalBox" class="hidden pt-2 border-t border-slate-800/80 flex justify-between items-center">
+              <div>
+                <label for="eurlCapitalInput" class="text-slate-300 font-medium block">Capital social EURL (€)</label>
+                <span class="text-[10px] text-slate-500 block">Seuil PFU 31.4% = 10% du capital (au-delà : charges TNS ~45% + IR 12.8%)</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <input type="number" id="eurlCapitalInput" min="1" max="500000" step="500" value="1000" class="w-24 px-2 py-1 bg-slate-900 border border-slate-700 rounded-lg text-right font-semibold text-indigo-300 focus:outline-none focus:border-indigo-500 text-xs">
+                <span class="text-slate-400 font-medium">€</span>
+              </div>
             </div>
           </div>
 
@@ -204,8 +232,8 @@
             <div class="space-y-1">
               <label for="sasuRemunMode" class="block text-slate-300 font-medium">Stratégie de rémunération SASU IS :</label>
               <select id="sasuRemunMode" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
-                <option value="dividendes_full">100% Dividendes (Optimisé Flat Tax 30%)</option>
-                <option value="mixte">Mixte (SMIC Salaire pour sécu + Dividendes)</option>
+                <option value="dividendes_full">100% Dividendes (PFU / Flat Tax 31,4 % en 2026)</option>
+                <option value="mixte">Mixte (SMIC Salaire pour sécu + Dividendes PFU 31,4 %)</option>
                 <option value="salaire_full">100% Rémunération Président (~80% cotisations)</option>
               </select>
             </div>
@@ -309,6 +337,13 @@
                     <span id="flDetailMutuelleTag" class="text-[10px] text-slate-500">(Perso)</span>
                   </span>
                   <span class="font-mono text-slate-400" id="flDetailMutuelle">- 0 €</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400 flex items-center gap-1">
+                    <span>CFE (Cotisation Foncière)</span>
+                    <span id="flDetailCFETag" class="text-[10px] text-slate-500">(Perso)</span>
+                  </span>
+                  <span class="font-mono text-slate-400" id="flDetailCFE">- 0 €</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-slate-400">Cotisations sociales (URSSAF)</span>
@@ -501,8 +536,10 @@
       jours: 210,
       frais: 1200,
       mutuelle: 1500,
+      cfe: 500,
       aeVersementLib: false,
       eurlMode: 'tns_full',
+      eurlCapital: 1000,
       sasuMode: 'dividendes_full',
       cdiBrut: 65000,
       includeSafetyBuffer: true,
@@ -518,10 +555,14 @@
       fraisInput: document.getElementById('fraisInput'),
       mutuelleInput: document.getElementById('mutuelleInput'),
       mutuelleFiscalBadge: document.getElementById('mutuelleFiscalBadge'),
+      cfeInput: document.getElementById('cfeInput'),
+      cfeFiscalBadge: document.getElementById('cfeFiscalBadge'),
       cdiBrutInput: document.getElementById('cdiBrutInput'),
       cdiBrutSlider: document.getElementById('cdiBrutSlider'),
       aeVersementLiberatoire: document.getElementById('aeVersementLiberatoire'),
       eurlRemunMode: document.getElementById('eurlRemunMode'),
+      eurlCapitalBox: document.getElementById('eurlCapitalBox'),
+      eurlCapitalInput: document.getElementById('eurlCapitalInput'),
       sasuRemunMode: document.getElementById('sasuRemunMode'),
       includeSafetyBuffer: document.getElementById('includeSafetyBuffer'),
       statutBtns: document.querySelectorAll('.statut-btn'),
@@ -544,6 +585,8 @@
       flDetailFrais: document.getElementById('flDetailFrais'),
       flDetailMutuelle: document.getElementById('flDetailMutuelle'),
       flDetailMutuelleTag: document.getElementById('flDetailMutuelleTag'),
+      flDetailCFE: document.getElementById('flDetailCFE'),
+      flDetailCFETag: document.getElementById('flDetailCFETag'),
       flDetailCotisations: document.getElementById('flDetailCotisations'),
       flDetailISRow: document.getElementById('flDetailISRow'),
       flDetailIS: document.getElementById('flDetailIS'),
@@ -644,13 +687,19 @@
     }
 
     // 3. Calcul Freelance
-    function calculateFreelance(statut, tjm, jours, frais, mutuelle, options) {
+    // Taux PFU / Flat Tax 2026 : 31,4 % (18,6 % de prélèvements sociaux suite à la hausse CSG 2026 + 12,8 % d'IR)
+    const PFU_PS_2026 = 0.186;
+    const PFU_IR_2026 = 0.128;
+    const PFU_TOTAL_2026 = PFU_PS_2026 + PFU_IR_2026; // 0.314
+
+    function calculateFreelance(statut, tjm, jours, frais, mutuelle, cfe, options) {
       const ca = tjm * jours;
       let cotisations = 0;
       let impotSociete = 0;
       let ir = 0;
       let netNetAnnuel = 0;
-      let mutuelleMode = 'Perso'; // 'Perso', 'Madelin', 'Société'
+      let mutuelleMode = 'Payé en perso'; // 'Payé en perso', 'Madelin déduit', 'Société déduit'
+      let cfeMode = 'Payé en perso'; // 'Payé en perso', 'Société déduit'
       let warningPlafondAE = false;
       let warningTvaAE = false;
 
@@ -675,15 +724,17 @@
           ir = computeBaremeIR(baseImposable);
         }
 
-        // Reste net : En AE les frais et la mutuelle ne sont pas déductibles et sortent de la poche personnelle
+        // Reste net : En AE les frais, la mutuelle et la CFE ne sont pas déductibles et sortent de la poche personnelle
         mutuelleMode = 'Payé en perso';
-        netNetAnnuel = ca - cotisations - ir - frais - mutuelle;
+        cfeMode = 'Payé en perso';
+        netNetAnnuel = ca - cotisations - ir - frais - mutuelle - cfe;
       } 
       else if (statut === 'EURL_IS') {
         // EURL à l'IS (Gérant Majoritaire TNS)
-        // Les frais pro et la mutuelle/prévoyance Loi Madelin sont déduits par la société
+        // Les frais pro, la CFE et la mutuelle/prévoyance Loi Madelin sont déduits du résultat de la société
         mutuelleMode = 'Madelin déduit';
-        const disponibleSociete = Math.max(0, ca - frais - mutuelle);
+        cfeMode = 'Société déduit';
+        const disponibleSociete = Math.max(0, ca - frais - mutuelle - cfe);
 
         if (options.eurlMode === 'tns_full') {
           // 100% du disponible versé en Rémunération Gérant TNS -> 0 € d'IS
@@ -694,9 +745,46 @@
           // Abattement forfaitaire de 10% sur la rémunération de gérance à l'IR
           ir = computeBaremeIR(remNetAvantIR * 0.90);
           netNetAnnuel = remNetAvantIR - ir;
+        } else if (options.eurlMode === 'tns_dividendes') {
+          // Rémunération TNS de base (36 000 € net avant IR si le CA le permet) + Dividendes versés en poche
+          // Application stricte de l'Art. L131-6 CSS :
+          // - Dividendes <= 10% du capital social : PFU 31,4 % (18,6 % PS + 12,8 % IR)
+          // - Dividendes > 10% du capital social : assujettis aux cotisations sociales TNS (~45 %) + IR 12,8 %
+          const remCibleNet = 36000;
+          const coutRemCible = remCibleNet * 1.45;
+
+          const enveloppeRem = Math.min(disponibleSociete, coutRemCible);
+          const remNetAvantIR = enveloppeRem / 1.45;
+          const cotisRem = enveloppeRem - remNetAvantIR;
+          const irRem = computeBaremeIR(remNetAvantIR * 0.90);
+
+          const beneficeAvantIS = Math.max(0, disponibleSociete - enveloppeRem);
+          const tranche15 = Math.min(beneficeAvantIS, 42500);
+          const tranche25 = Math.max(0, beneficeAvantIS - 42500);
+          impotSociete = (tranche15 * 0.15) + (tranche25 * 0.25);
+
+          const dividendeDistribuable = Math.max(0, beneficeAvantIS - impotSociete);
+          const seuil10PctCapital = Math.max(0, (options.eurlCapital || 1000) * 0.10);
+
+          // Part <= 10% du capital : PFU 31,4%
+          const divPart10Pct = Math.min(dividendeDistribuable, seuil10PctCapital);
+          const cotisDiv10 = divPart10Pct * PFU_PS_2026;
+          const irDiv10 = divPart10Pct * PFU_IR_2026;
+          const netDiv10 = divPart10Pct - cotisDiv10 - irDiv10;
+
+          // Part > 10% du capital : soumise aux cotisations TNS (~45%) puis à l'IR du PFU (12,8%)
+          const divExcedentBrut = Math.max(0, dividendeDistribuable - seuil10PctCapital);
+          const divExcedentApresCotisTNS = divExcedentBrut / 1.45;
+          const cotisDivExcedent = divExcedentBrut - divExcedentApresCotisTNS;
+          const irDivExcedent = divExcedentApresCotisTNS * PFU_IR_2026;
+          const netDivExcedent = divExcedentApresCotisTNS - irDivExcedent;
+
+          cotisations = cotisRem + cotisDiv10 + cotisDivExcedent;
+          ir = irRem + irDiv10 + irDivExcedent;
+          netNetAnnuel = (remNetAvantIR - irRem) + netDiv10 + netDivExcedent;
         } else {
           // 'tns_is_optim' : Plafonner le bénéfice laissé à l'IS au taux réduit de 15% (max 42 500 €)
-          // et verser tout le surplus en rémunération Gérant TNS (~45% de cotisations + IR)
+          // capitalisé en trésorerie/holding, et verser tout le surplus en rémunération Gérant TNS (~45% de cotisations + IR)
           const beneficeCibleIS = Math.min(disponibleSociete, 42500);
           impotSociete = beneficeCibleIS * 0.15;
           const tresoNetteIS = beneficeCibleIS - impotSociete;
@@ -710,27 +798,28 @@
         }
       }
       else if (statut === 'SASU_IS') {
-        // SASU à l'Impôt sur les Sociétés
+        // SASU à l'Impôt sur les Sociétés (CFE déduite par la société)
+        cfeMode = 'Société déduit';
         if (options.sasuMode === 'dividendes_full') {
           // 0 € salaire -> La mutuelle ne peut pas être passée sur la société (pas de bulletin de paie)
           mutuelleMode = 'Payé en perso';
-          const caNetFrais = Math.max(0, ca - frais);
+          const caNetFrais = Math.max(0, ca - frais - cfe);
           // IS : 15% jusqu'à 42 500 €, 25% au-delà
           const tranche15 = Math.min(caNetFrais, 42500);
           const tranche25 = Math.max(0, caNetFrais - 42500);
           impotSociete = (tranche15 * 0.15) + (tranche25 * 0.25);
 
           const resultatNetDistribuable = Math.max(0, caNetFrais - impotSociete);
-          // Flat Tax (PFU) à 30% (17.2% prélèvements sociaux + 12.8% IR)
-          const flatTax = resultatNetDistribuable * 0.30;
-          cotisations = resultatNetDistribuable * 0.172; // part sociale de la flat tax
-          ir = resultatNetDistribuable * 0.128; // part fiscale
+          // Flat Tax (PFU 2026) à 31,4% (18,6% prélèvements sociaux + 12,8% IR)
+          const flatTax = resultatNetDistribuable * PFU_TOTAL_2026;
+          cotisations = resultatNetDistribuable * PFU_PS_2026; // part sociale de la flat tax
+          ir = resultatNetDistribuable * PFU_IR_2026; // part fiscale
           netNetAnnuel = resultatNetDistribuable - flatTax - mutuelle;
         }
         else if (options.sasuMode === 'mixte') {
           // Avec bulletin de paie (SMIC), la mutuelle d'entreprise / prévoyance est déductible des charges société
           mutuelleMode = 'Société déduit';
-          const caNetFrais = Math.max(0, ca - frais - mutuelle);
+          const caNetFrais = Math.max(0, ca - frais - mutuelle - cfe);
           // SMIC Annuel (~21 200 € brut) pour valider 4 trimestres de retraite et sécurité sociale
           const salaireBrut = 21200;
           const cotisPresident = salaireBrut * 0.78; // charges patronales + salariales assimilé salarié
@@ -743,12 +832,12 @@
             impotSociete = (tranche15 * 0.15) + (tranche25 * 0.25);
 
             const dividendeNetIS = beneficeAvantIS - impotSociete;
-            const flatTax = dividendeNetIS * 0.30;
+            const flatTax = dividendeNetIS * PFU_TOTAL_2026;
             const salNetAvantIR = salaireBrut * 0.78;
             const irSalaire = computeBaremeIR(salNetAvantIR * 0.90);
 
-            cotisations = cotisPresident + (dividendeNetIS * 0.172);
-            ir = irSalaire + (dividendeNetIS * 0.128);
+            cotisations = cotisPresident + (dividendeNetIS * PFU_PS_2026);
+            ir = irSalaire + (dividendeNetIS * PFU_IR_2026);
             netNetAnnuel = salNetAvantIR - irSalaire + (dividendeNetIS - flatTax);
           } else {
             // Le CA couvre à peine le salaire
@@ -759,9 +848,9 @@
           }
         }
         else { // 'salaire_full'
-          // Tout est sorti en rémunération de président : mutuelle/prévoyance passée en charge société
+          // Tout est sorti en rémunération de président : mutuelle/prévoyance et CFE passées en charges société
           mutuelleMode = 'Société déduit';
-          const caNetFrais = Math.max(0, ca - frais - mutuelle);
+          const caNetFrais = Math.max(0, ca - frais - mutuelle - cfe);
           const netAvantIR = caNetFrais / 1.78;
           cotisations = caNetFrais - netAvantIR;
           impotSociete = 0;
@@ -772,9 +861,10 @@
       else if (statut === 'SASU_IR') {
         // SASU à l'Impôt sur le Revenu (Option possible les 5 premières années, sans salaire)
         mutuelleMode = 'Payé en perso';
-        const benefice = Math.max(0, ca - frais);
-        // Note : En SASU à l'IR sans salaire, le bénéfice subit 17.2% de prélèvements sociaux
-        const prelevementsSociaux = benefice * 0.172;
+        cfeMode = 'Société déduit';
+        const benefice = Math.max(0, ca - frais - cfe);
+        // Note : En SASU à l'IR sans salaire, le bénéfice subit 18,6% de prélèvements sociaux (taux 2026)
+        const prelevementsSociaux = benefice * PFU_PS_2026;
         cotisations = prelevementsSociaux;
         ir = computeBaremeIR(benefice);
         impotSociete = 0;
@@ -786,6 +876,8 @@
         frais,
         mutuelle,
         mutuelleMode,
+        cfe,
+        cfeMode,
         cotisations,
         impotSociete,
         ir,
@@ -797,14 +889,14 @@
     }
 
     // 4. Calcul du TJM d'équilibre (Goal Seek itératif)
-    function calculateTjmEquilibre(statut, targetNet, jours, frais, mutuelle, options) {
+    function calculateTjmEquilibre(statut, targetNet, jours, frais, mutuelle, cfe, options) {
       let low = 150;
       let high = 2500;
       let bestTjm = low;
 
       for (let i = 0; i < 30; i++) {
         const mid = (low + high) / 2;
-        const res = calculateFreelance(statut, mid, jours, frais, mutuelle, options);
+        const res = calculateFreelance(statut, mid, jours, frais, mutuelle, cfe, options);
         if (res.netNetAnnuel < targetNet) {
           low = mid;
         } else {
@@ -824,35 +916,52 @@
       state.jours = parseInt(el.joursInput.value) || 210;
       state.frais = parseFloat(el.fraisInput.value) || 0;
       state.mutuelle = parseFloat(el.mutuelleInput.value) || 0;
+      state.cfe = parseFloat(el.cfeInput.value) || 0;
       state.cdiBrut = parseFloat(el.cdiBrutInput.value) || 65000;
       state.aeVersementLib = el.aeVersementLiberatoire.checked;
       state.eurlMode = el.eurlRemunMode.value;
+      state.eurlCapital = parseFloat(el.eurlCapitalInput.value) || 1000;
       state.sasuMode = el.sasuRemunMode.value;
       state.includeSafetyBuffer = el.includeSafetyBuffer.checked;
+
+      // Afficher ou masquer le champ Capital Social en EURL IS selon l'option choisie
+      if (state.statut === 'EURL_IS' && state.eurlMode === 'tns_dividendes') {
+        el.eurlCapitalBox.classList.remove('hidden');
+      } else {
+        el.eurlCapitalBox.classList.add('hidden');
+      }
 
       const flOptions = {
         aeVersementLib: state.aeVersementLib,
         eurlMode: state.eurlMode,
+        eurlCapital: state.eurlCapital,
         sasuMode: state.sasuMode,
       };
 
       // 2. Calculs
       const cdi = calculateCDI(state.cdiBrut, state.includeSafetyBuffer);
-      const fl = calculateFreelance(state.statut, state.tjm, state.jours, state.frais, state.mutuelle, flOptions);
+      const fl = calculateFreelance(state.statut, state.tjm, state.jours, state.frais, state.mutuelle, state.cfe, flOptions);
 
       // Seuil d'équité : Compare avec le net en poche OU avec le net + amortisseur
       const targetCdiNet = state.includeSafetyBuffer ? cdi.netAvecSafety : cdi.netNetAnnuel;
-      const tjmEquilibre = calculateTjmEquilibre(state.statut, targetCdiNet, state.jours, state.frais, state.mutuelle, flOptions);
+      const tjmEquilibre = calculateTjmEquilibre(state.statut, targetCdiNet, state.jours, state.frais, state.mutuelle, state.cfe, flOptions);
 
       const ecartAnnuel = fl.netNetAnnuel - targetCdiNet;
       const ecartMensuel = ecartAnnuel / 12;
 
-      // 3. Mise à jour du badge fiscal de la mutuelle
+      // 3. Mise à jour des badges fiscaux (Mutuelle & CFE)
       el.mutuelleFiscalBadge.textContent = fl.mutuelleMode;
       if (fl.mutuelleMode === 'Payé en perso') {
         el.mutuelleFiscalBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium';
       } else {
         el.mutuelleFiscalBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium';
+      }
+
+      el.cfeFiscalBadge.textContent = fl.cfeMode;
+      if (fl.cfeMode === 'Payé en perso') {
+        el.cfeFiscalBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium';
+      } else {
+        el.cfeFiscalBadge.className = 'text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium';
       }
 
       // 4. Mise à jour de la bannière Verdict
@@ -868,6 +977,8 @@
       el.flDetailFrais.textContent = `- ${fmt.format(fl.frais)}`;
       el.flDetailMutuelle.textContent = `- ${fmt.format(fl.mutuelle)}`;
       el.flDetailMutuelleTag.textContent = `(${fl.mutuelleMode})`;
+      el.flDetailCFE.textContent = `- ${fmt.format(fl.cfe)}`;
+      el.flDetailCFETag.textContent = `(${fl.cfeMode})`;
       el.flDetailCotisations.textContent = `- ${fmt.format(fl.cotisations)}`;
       el.flDetailIR.textContent = `- ${fmt.format(fl.ir)}`;
 
@@ -880,13 +991,13 @@
 
       // Safety status freelance
       if (state.statut === 'AE') {
-        el.flSafetyRating.innerHTML = '⚠️ Urssaf de base, 0 ARE, Mutuelle non déductible';
+        el.flSafetyRating.innerHTML = '⚠️ Urssaf de base, 0 ARE, Mutuelle & CFE non déductibles';
       } else if (state.statut === 'EURL_IS') {
-        el.flSafetyRating.innerHTML = '🛡️ Gérant TNS (SSI), Mutuelle & Prévoyance Madelin déduites, 0 ARE';
+        el.flSafetyRating.innerHTML = '🛡️ Gérant TNS (SSI), Mutuelle Madelin & CFE déduites, 0 ARE';
       } else if (state.statut === 'SASU_IS' && state.sasuMode === 'dividendes_full') {
         el.flSafetyRating.innerHTML = '🚨 100% Dividendes = 0 trimestre retraite, Mutuelle payée en perso';
       } else {
-        el.flSafetyRating.innerHTML = '🛡️ Assimilé salarié (Régime Général), Mutuelle société déduite, 0 ARE';
+        el.flSafetyRating.innerHTML = '🛡️ Assimilé salarié (Régime Général), Mutuelle & CFE déduites, 0 ARE';
       }
 
       // CDI Card
@@ -1049,21 +1160,28 @@
         alerts.push(`
           <div class="flex items-start gap-2 text-slate-400">
             <span class="text-sm">📌</span>
-            <span><strong>Particularité AE :</strong> Vos frais professionnels (${fmt.format(fl.frais)}) et votre mutuelle/prévoyance (${fmt.format(fl.mutuelle)}) ne sont <em>pas déductibles</em> des cotisations URSSAF et sont payés avec votre argent net.</span>
+            <span><strong>Particularité AE :</strong> Vos frais professionnels (${fmt.format(fl.frais)}), votre mutuelle (${fmt.format(fl.mutuelle)}) et votre CFE (${fmt.format(fl.cfe)}) ne sont <em>pas déductibles</em> des cotisations URSSAF et sont payés avec votre argent net.</span>
           </div>
         `);
       } else if (state.statut === 'EURL_IS') {
         alerts.push(`
           <div class="flex items-start gap-2 text-emerald-300">
             <span class="text-sm">⚡</span>
-            <span><strong>Atout majeur EURL à l'IS (Gérant TNS) :</strong> Les cotisations sociales ne représentent que <strong>~45% de la rémunération nette</strong> (contre ~78% en SASU). En prime, votre mutuelle & prévoyance (${fmt.format(fl.mutuelle)}) sont déductibles via la <strong>Loi Madelin</strong>.</span>
+            <span><strong>Atout majeur EURL à l'IS (Gérant TNS) :</strong> Les cotisations sociales sur la rémunération ne représentent que <strong>~45% du net</strong> (contre ~78% en SASU). En prime, vos frais pro, votre CFE (${fmt.format(fl.cfe)}) et votre mutuelle & prévoyance (${fmt.format(fl.mutuelle)}) sont déductibles (Loi Madelin).</span>
           </div>
         `);
-        if (state.eurlMode === 'tns_is_optim') {
+        if (state.eurlMode === 'tns_dividendes') {
+          alerts.push(`
+            <div class="flex items-start gap-2 text-amber-300">
+              <span class="text-sm">⚠️</span>
+              <span><strong>Règle des 10 % du capital social sur les dividendes EURL (Art. L131-6 CSS) :</strong> Seule la part des dividendes inférieure à 10 % de votre capital social (${fmt.format(state.eurlCapital * 0.10)} pour un capital de ${fmt.format(state.eurlCapital)}) bénéficie du PFU de 31,4 %. Tout l'excédent supporte les cotisations sociales TNS (~45 %) en plus de l'IS et de l'IR (12,8 %).</span>
+            </div>
+          `);
+        } else if (state.eurlMode === 'tns_is_optim') {
           alerts.push(`
             <div class="flex items-start gap-2 text-indigo-300">
               <span class="text-sm">🏦</span>
-              <span><strong>Optimisation IS à 15% :</strong> Jusqu'à 42 500 € de bénéfice sont laissés à l'IS au taux réduit de 15% (soit ${fmt.format(fl.impotSociete)} d'IS) pour capitaliser en trésorerie/holding, tandis que le surplus est versé en rémunération TNS. Attention : en EURL, les dividendes versés en direct au-delà de 10% du capital social supportent les charges TNS.</span>
+              <span><strong>Trésorerie capitalisée à l'IS 15% :</strong> Jusqu'à 42 500 € de bénéfice sont laissés dans la société/holding au taux réduit d'IS de 15% (soit ${fmt.format(fl.impotSociete)} d'IS), tandis que le surplus est versé en rémunération TNS. Si vous sortez cette trésorerie en dividendes directs avec un petit capital social, utilisez l'option "Rémunération + Dividendes versés (Seuil 10% capital)".</span>
             </div>
           `);
         }
@@ -1071,7 +1189,7 @@
         alerts.push(`
           <div class="flex items-start gap-2 text-indigo-300">
             <span class="text-sm">🏢</span>
-            <span><strong>Avantage SASU IS :</strong> Vos frais réels de ${fmt.format(fl.frais)} réduisent directement le bénéfice imposable. Le matériel informatique (Mac, écran), licences SaaS, formations et abonnements télécoms sont payés par la société avant impôt.</span>
+            <span><strong>Avantage SASU IS :</strong> Vos frais réels (${fmt.format(fl.frais)}) et votre CFE (${fmt.format(fl.cfe)}) réduisent directement le bénéfice imposable. Les dividendes ne subissent pas les charges URSSAF quel que soit le capital social, mais supportent le <strong>PFU (Flat Tax) de 31,4 % depuis 2026</strong> (18,6 % PS + 12,8 % IR).</span>
           </div>
         `);
         if (state.sasuMode === 'dividendes_full') {
@@ -1086,7 +1204,7 @@
         alerts.push(`
           <div class="flex items-start gap-2 text-indigo-300">
             <span class="text-sm">🔥</span>
-            <span><strong>SASU à l'IR :</strong> Régime fiscal temporaire (5 ans max). Le résultat net est directement intégré dans votre déclaration fiscale sans passer par l'IS ni la flat tax. Sans salaire de président, la mutuelle (${fmt.format(fl.mutuelle)}) reste payée en perso.</span>
+            <span><strong>SASU à l'IR :</strong> Régime fiscal temporaire (5 ans max). Le résultat net (après déduction des frais et de la CFE de ${fmt.format(fl.cfe)}) est soumis aux prélèvements sociaux (18,6 % en 2026) et intégré directement au barème IR de votre foyer.</span>
           </div>
         `);
       }
@@ -1116,8 +1234,10 @@
 
     el.fraisInput.addEventListener('input', updateSimulator);
     el.mutuelleInput.addEventListener('input', updateSimulator);
+    el.cfeInput.addEventListener('input', updateSimulator);
     el.aeVersementLiberatoire.addEventListener('change', updateSimulator);
     el.eurlRemunMode.addEventListener('change', updateSimulator);
+    el.eurlCapitalInput.addEventListener('input', updateSimulator);
     el.sasuRemunMode.addEventListener('change', updateSimulator);
     el.includeSafetyBuffer.addEventListener('change', updateSimulator);
 
@@ -1139,19 +1259,19 @@
           el.aeOptions.classList.remove('hidden');
           el.eurlOptions.classList.add('hidden');
           el.sasuOptions.classList.add('hidden');
-          el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais aucune déduction de frais ni de mutuelle.';
+          el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais aucune déduction de frais, CFE ni mutuelle.';
           if (el.fraisInput.value > 2000) el.fraisInput.value = 1200;
         } else if (state.statut === 'EURL_IS') {
           el.aeOptions.classList.add('hidden');
           el.eurlOptions.classList.remove('hidden');
           el.sasuOptions.classList.add('hidden');
-          el.statutNotice.textContent = 'Statut roi du freelance long terme : cotisations TNS réduites (~45% du net), frais pro et mutuelle/prévoyance Loi Madelin 100% déductibles.';
+          el.statutNotice.textContent = 'Statut roi du freelance long terme : cotisations TNS réduites (~45% du net), frais pro, CFE et mutuelle Loi Madelin 100% déductibles.';
           if (el.fraisInput.value < 2500) el.fraisInput.value = 3500; // Compta + frais de tenue
         } else if (state.statut === 'SASU_IS') {
           el.aeOptions.classList.add('hidden');
           el.eurlOptions.classList.add('hidden');
           el.sasuOptions.classList.remove('hidden');
-          el.statutNotice.textContent = 'Déduction de tous les frais professionnels. Choix d\'arbitrage entre salaire président et dividendes (Flat Tax 30%).';
+          el.statutNotice.textContent = 'Déduction de tous les frais professionnels et CFE. Arbitrage entre salaire président et dividendes (PFU / Flat Tax 31,4 % en 2026).';
           if (el.fraisInput.value < 2500) el.fraisInput.value = 3500; // Compta + frais de tenue
         } else if (state.statut === 'SASU_IR') {
           el.aeOptions.classList.add('hidden');
@@ -1166,7 +1286,7 @@
     });
 
     // Initialize Default State Notice
-    el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais aucune déduction de frais ni de mutuelle.';
+    el.statutNotice.textContent = 'Simplicité comptable maximale, cotisations ~23.4% sur le CA brut, mais aucune déduction de frais, CFE ni mutuelle.';
 
     // First initial render
     updateSimulator();
